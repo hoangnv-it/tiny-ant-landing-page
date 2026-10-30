@@ -1,0 +1,277 @@
+@import 'tailwindcss';
+@import './styles/tokens.css';
+
+@layer base {
+  html {
+    /* Neo (#faq, #dang-ky…) không bị header dính che */
+    scroll-padding-top: calc(var(--spacing-header) + 1rem);
+  }
+  /* Khoá cuộn khi mở pop-up; JS bù padding-right bằng bề rộng thanh cuộn để trang không giật */
+  html.modal-open {
+    overflow: hidden;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+  body {
+    @apply bg-paper font-sans text-text antialiased;
+    /* Giấy sách cũ: vân giấy + mép trang sẫm nhẹ + vài vết ố vàng nhạt rải rác (pha loãng, không rối) */
+    background-image:
+      var(--paper-grain),
+      linear-gradient(
+        to right,
+        color-mix(in srgb, var(--color-stain) 14%, transparent),
+        transparent 4%,
+        transparent 96%,
+        color-mix(in srgb, var(--color-stain) 14%, transparent)
+      ),
+      radial-gradient(
+        circle at 6% 18%,
+        color-mix(in srgb, var(--color-stain) 16%, transparent) 0 2.5rem,
+        transparent 7rem
+      ),
+      radial-gradient(
+        circle at 94% 47%,
+        color-mix(in srgb, var(--color-stain) 13%, transparent) 0 2rem,
+        transparent 6rem
+      ),
+      radial-gradient(
+        circle at 4% 78%,
+        color-mix(in srgb, var(--color-stain) 12%, transparent) 0 1.5rem,
+        transparent 5rem
+      ),
+      radial-gradient(ellipse at 20% 0%, var(--color-card) 0%, transparent 55%),
+      radial-gradient(ellipse at 100% 60%, var(--color-paper-dark) 0%, transparent 50%);
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-heading text-ink;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-ink;
+  }
+}
+
+@layer base {
+  /* Khi tắt JavaScript (<html> không có class .js — xem index.html): mọi nội dung vẫn đọc được.
+     Phải nằm trong @layer base: [hidden] { display: none !important } của Tailwind ở layer này,
+     mà !important trong layer luôn thắng !important ngoài layer. */
+  html:not(.js) [role='tabpanel'][hidden] {
+    display: block !important;
+  }
+  html:not(.js) [role='tabpanel'] + [role='tabpanel'] {
+    margin-top: 1rem;
+  }
+  /* Chính sách bảo mật: không có JS thì link #chinh-sach-bao-mat hiện nội dung ngay trong trang */
+  html:not(.js) dialog#chinh-sach-bao-mat:target {
+    display: block;
+    position: static;
+    opacity: 1;
+    transform: none;
+    margin: 2rem auto;
+  }
+  html:not(.js) .js-only,
+  .js .nojs-only {
+    display: none !important;
+  }
+}
+
+@layer components {
+  /* Tranh minh hoạ như in offset trên sách cũ: ngả màu nhẹ, bớt rực */
+  .print-img {
+    filter: sepia(0.2) saturate(0.82) contrast(1.06) brightness(0.98);
+  }
+  /* Khung tranh sách giáo khoa: viền mực xanh mảnh, góc vuông */
+  .print-frame {
+    border: 1.5px solid var(--color-print-blue);
+    border-radius: 0;
+  }
+
+  /* Trang vở ô ly: dòng kẻ xanh nhạt + đường lề đỏ, vẽ bằng CSS (không dùng ảnh) */
+  .notebook {
+    background-color: var(--color-card);
+    background-image:
+      linear-gradient(
+        to right,
+        transparent 1.75rem,
+        color-mix(in srgb, var(--color-accent-red) 45%, transparent) 1.75rem,
+        color-mix(in srgb, var(--color-accent-red) 45%, transparent) calc(1.75rem + 1px),
+        transparent calc(1.75rem + 1px)
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent calc(2rem - 1px),
+        var(--color-rule) calc(2rem - 1px),
+        var(--color-rule) 2rem
+      ),
+      var(--paper-grain);
+  }
+
+  /* Pop-up đăng ký: JS bật/tắt [data-open]; đóng thật (dialog.close) sau khi chạy xong hiệu ứng.
+     Mở: 220ms ease-out (phóng nhẹ 96% -> 100%, trượt lên 8px). Đóng: 160ms, nhanh hơn. */
+  .lead-dialog {
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.96);
+    transition:
+      opacity 160ms ease-in,
+      transform 160ms ease-in;
+  }
+  .lead-dialog[data-open] {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 220ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .lead-dialog::backdrop {
+    background-color: color-mix(in srgb, var(--color-bezel) 0%, transparent);
+    backdrop-filter: blur(0);
+    transition:
+      background-color 200ms ease,
+      backdrop-filter 200ms ease;
+  }
+  .lead-dialog[data-open]::backdrop {
+    background-color: color-mix(in srgb, var(--color-bezel) 55%, transparent);
+    backdrop-filter: blur(2px);
+  }
+  /* Mobile: tấm trượt lên từ cạnh dưới */
+  @media (width < 40rem) {
+    .lead-dialog {
+      transform: translateY(100%);
+      transition:
+        opacity 200ms ease-in,
+        transform 200ms ease-in;
+    }
+    .lead-dialog[data-open] {
+      transition:
+        opacity 280ms cubic-bezier(0.16, 1, 0.3, 1),
+        transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+  }
+  /* Giảm chuyển động: chỉ mờ dần, không phóng/trượt */
+  @media (prefers-reduced-motion: reduce) {
+    .lead-dialog,
+    .lead-dialog[data-open] {
+      transform: none;
+    }
+  }
+
+  /* Nút menu mobile: 3 vạch -> chữ X theo aria-expanded.
+     Vạch trên/dưới trượt vào giữa rồi xoay ±45°, vạch giữa thu lại và mờ đi. */
+  .menu-icon {
+    position: relative;
+    width: 1.25rem;
+    height: 0.875rem;
+  }
+  .menu-icon > span {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    border-radius: 1px;
+    background-color: currentColor;
+    transition:
+      top 160ms ease 160ms,
+      transform 160ms ease,
+      opacity 120ms ease 100ms;
+  }
+  .menu-icon > span:nth-child(1) {
+    top: 0;
+  }
+  .menu-icon > span:nth-child(2) {
+    top: calc(50% - 1px);
+  }
+  .menu-icon > span:nth-child(3) {
+    top: calc(100% - 2px);
+  }
+  [aria-expanded='true'] > .menu-icon > span {
+    transition:
+      top 160ms ease,
+      transform 200ms cubic-bezier(0.34, 1.4, 0.64, 1) 160ms,
+      opacity 120ms ease;
+  }
+  [aria-expanded='true'] > .menu-icon > span:nth-child(1) {
+    top: calc(50% - 1px);
+    transform: rotate(45deg);
+  }
+  [aria-expanded='true'] > .menu-icon > span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0.2);
+  }
+  [aria-expanded='true'] > .menu-icon > span:nth-child(3) {
+    top: calc(50% - 1px);
+    transform: rotate(-45deg);
+  }
+
+  /* Menu mobile: luôn có trong HTML; đóng thì cao 0 + visibility:hidden (không focus/đọc được).
+     Mở: kéo giãn chiều cao, các link lần lượt trượt xuống và hiện dần. */
+  .mobile-menu {
+    display: grid;
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    transition:
+      grid-template-rows 220ms ease-in,
+      visibility 0s linear 220ms;
+  }
+  .mobile-menu > * {
+    min-height: 0;
+    overflow: hidden;
+  }
+  .mobile-menu[data-open] {
+    grid-template-rows: 1fr;
+    visibility: visible;
+    transition:
+      grid-template-rows 300ms cubic-bezier(0.16, 1, 0.3, 1),
+      visibility 0s;
+  }
+  .mobile-menu li {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+    transition:
+      opacity 150ms ease-in,
+      transform 150ms ease-in;
+  }
+  .mobile-menu[data-open] li {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 260ms ease-out,
+      transform 260ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .mobile-menu[data-open] li:nth-child(2) {
+    transition-delay: 40ms;
+  }
+  .mobile-menu[data-open] li:nth-child(3) {
+    transition-delay: 80ms;
+  }
+  .mobile-menu[data-open] li:nth-child(4) {
+    transition-delay: 120ms;
+  }
+  .mobile-menu[data-open] li:nth-child(n + 5) {
+    transition-delay: 160ms;
+  }
+  /* Tắt JS: không có nút menu, danh sách link hiện sẵn dưới header */
+  html:not(.js) .mobile-menu {
+    grid-template-rows: 1fr;
+    visibility: visible;
+  }
+  html:not(.js) .mobile-menu li {
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .menu-icon > span,
+    [aria-expanded='true'] > .menu-icon > span,
+    .mobile-menu,
+    .mobile-menu[data-open],
+    .mobile-menu li,
+    .mobile-menu[data-open] li {
+      transition-duration: 0s;
+      transition-delay: 0s;
+    }
+  }
+}

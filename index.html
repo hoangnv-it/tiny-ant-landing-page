@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Thẻ dùng chung mọi trang. Thẻ theo route (title, description, canonical, OG, JSON-LD): src/components/Seo.tsx -->
+    <!-- Đánh dấu có JavaScript trước lần vẽ đầu: CSS dùng .js / :not(.js) cho bản tắt JS -->
+    <script>
+      document.documentElement.classList.add('js')
+    </script>
+    <meta name="theme-color" content="#f2e4cc" />
+    <meta property="og:site_name" content="Tiny Ant" />
+    <meta property="og:locale" content="vi_VN" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" type="image/png" href="/favicon-32.png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

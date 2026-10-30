@@ -1,0 +1,20 @@
+{
+  "name": "Tiny Ant",
+  "short_name": "Tiny Ant",
+  "description": "Phần mềm quản lý lớp học thêm và quản lý trung tâm: điểm danh, giao bài, báo phụ huynh.",
+  "lang": "vi",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#f2e4cc",
+  "theme_color": "#f2e4cc",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    {
+      "src": "/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

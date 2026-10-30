@@ -1,0 +1,98 @@
+/* Design tokens — nguồn duy nhất cho màu, cỡ chữ, khoảng cách, bo góc.
+   Màu đo bằng sharp từ design/landing page - design.png. */
+@theme {
+  /* Tắt bảng màu mặc định của Tailwind: chỉ dùng được màu khai báo ở đây */
+  --color-*: initial;
+
+  --font-heading: 'Bitter', Georgia, serif;
+  --font-sans: 'Hanken Grotesk', system-ui, sans-serif;
+
+  /* Nền */
+  --color-paper: #f2e4cc; /* nền be chung */
+  --color-paper-dark: #ecdcbe; /* tab chưa chọn, dải nền đậm hơn */
+  --color-card: #f5e9d6; /* nền thẻ, panel */
+
+  /* Xanh đậm: tiêu đề h1/h2 */
+  --color-ink: #065274;
+  /* Nút đặc, tab đang chọn (đo được sáng hơn màu tiêu đề) */
+  --color-ink-500: #04749c;
+  /* Hộp CTA, hover của nút */
+  --color-ink-700: #04647c;
+
+  --color-accent-red: #c3452e; /* chữ đỏ hero, số thứ tự, gạch đầu tiêu đề */
+  --color-teal: #00b2bb; /* màu thương hiệu — chỉ cho icon/trang trí, tương phản thấp với chữ */
+  --color-text: #28404c;
+  --color-text-muted: #4e636a;
+  --color-border: #dcc6ab;
+  --color-success: #2f855a; /* tự chọn, thiết kế không có — dùng cho trạng thái form */
+  --color-danger: #a63a26; /* chữ báo lỗi (đỏ nhấn tối hơn: ≥ 5:1 trên nền thẻ) */
+  --color-rule: #c9dbe6; /* dòng kẻ xanh nhạt của trang vở (trang trí) */
+  /* Chất liệu sách giáo khoa cũ (đo từ ảnh scan sách thập niên 1990) */
+  --color-caption: #fbf8f0; /* ô chú thích bo tròn dưới tranh */
+  --color-label: #fdf5d4; /* nhãn vở dán bìa */
+  --color-stain: #c8a165; /* vết ố vàng của giấy cũ (chỉ dùng pha loãng) */
+  --color-olive: #8f9a6c; /* nhành lá trang trí (chỉ trang trí) */
+  --color-brown: #8b5532; /* chữ phụ nâu kiểu mực cũ (≥ 4.5:1 trên nền giấy) */
+  --color-step-card: #ded6c1; /* nền thẻ 3 bước, đo từ thiết kế (trùng nền tranh) */
+  --color-aged: #f1e2cb; /* nền thẻ "Quen thuộc với thầy cô", đo từ thiết kế */
+  --color-aged-edge: #ccbca2; /* viền thẻ giấy ngả màu, đo từ thiết kế */
+  --color-print-blue: #1c7cc6; /* xanh mực in của tranh sách cũ: khung tranh, viền nhãn (≥ 3:1 trên mọi nền giấy) */
+  --color-white: #ffffff;
+  --color-bezel: #1c2328; /* viền khung điện thoại */
+
+  /* Cỡ chữ: mobile / từ lg */
+  --text-h1: 2.125rem;
+  --text-h1--line-height: 1.15;
+  --text-h1-lg: 3.375rem;
+  --text-h1-lg--line-height: 1.12;
+  /* Hero máy tính: h1 3 dòng nằm giữa ảnh hai bên, co theo màn hình */
+  --text-h1-hero: clamp(1.875rem, 2.35vw, 2.625rem);
+  --text-h1-hero--line-height: 1.16;
+  --text-h2: 1.625rem;
+  --text-h2--line-height: 1.25;
+  --text-h2-lg: 2.125rem;
+  --text-h2-lg--line-height: 1.2;
+  /* h2 khi 2 section nằm cạnh nhau trên máy tính */
+  --text-h2-half: 1.5rem;
+  --text-h2-half--line-height: 1.25;
+  /* h2 hàng "Điểm mạnh | tranh | Thư viện" trên máy tính */
+  --text-h2-why: 1.875rem;
+  --text-h2-why--line-height: 1.25;
+  /* chữ thường nhỏ hơn base một chút (các ý của Thư viện bài) */
+  --text-body-sm: 0.9375rem;
+  --text-body-sm--line-height: 1.55;
+  --text-h3: 1.125rem;
+  --text-h3--line-height: 1.35;
+  --text-h3-lg: 1.25rem;
+  --text-h3-lg--line-height: 1.35;
+  --text-lead: 1.0625rem;
+  --text-lead--line-height: 1.6;
+  --text-lead-lg: 1.1875rem;
+  --text-lead-lg--line-height: 1.6;
+
+  /* Khoảng cách */
+  --spacing-section: 4rem;
+  --spacing-section-lg: 6rem;
+  --spacing-header: 4rem; /* chiều cao header dính */
+  --spacing-hero: 33rem; /* chiều cao tối thiểu hero trên máy tính */
+  --spacing-phone: 14rem; /* bề rộng điện thoại trong hero */
+  --container-page: 80rem; /* 1280px */
+
+  /* Bo góc */
+  --radius-card: 0.375rem;
+  --radius-caption: 0.875rem; /* ô chú thích, nhãn vở: bo tròn kiểu sách cũ */
+  --radius-sheet: 1.75rem; /* khung lớn bao hàng cuối */
+  --radius-panel: 0.5rem;
+  --radius-phone: 2.25rem;
+  --radius-phone-screen: 1.75rem;
+
+  /* Đổ bóng */
+  --shadow-card: 0 1px 2px rgb(40 64 76 / 0.06);
+  --shadow-header: 0 1px 0 rgb(40 64 76 / 0.08);
+  --shadow-phone: 0 18px 40px -12px rgb(28 35 40 / 0.45);
+}
+
+/* Vân giấy: nhiễu SVG nội tuyến (~400 byte), lặp ô 220px, không dùng ảnh lớn */
+:root {
+  --paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .25 0 0 0 0 .12 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}

@@ -1,0 +1,12 @@
+node_modules
+dist
+.vite-react-ssg-temp
+*.local
+.DS_Store
+shots
+.env
+.env.*
+!.env.example
+
+# Ảnh gốc (PNG) trước khi nén WebP — không đưa vào repo
+assets-originals
