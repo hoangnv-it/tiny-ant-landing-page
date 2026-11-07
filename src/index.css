@@ -65,14 +65,6 @@
   html:not(.js) [role='tabpanel'] + [role='tabpanel'] {
     margin-top: 1rem;
   }
-  /* Chính sách bảo mật: không có JS thì link #chinh-sach-bao-mat hiện nội dung ngay trong trang */
-  html:not(.js) dialog#chinh-sach-bao-mat:target {
-    display: block;
-    position: static;
-    opacity: 1;
-    transform: none;
-    margin: 2rem auto;
-  }
   html:not(.js) .js-only,
   .js .nojs-only {
     display: none !important;
@@ -254,6 +246,34 @@
   .mobile-menu[data-open] li:nth-child(n + 5) {
     transition-delay: 160ms;
   }
+  /* Menu thả xuống "Tính năng" (máy tính): JS bật/tắt [data-open]; chữ V xoay khi mở.
+     Tắt JS: hiện khi rê chuột hoặc focus vào mục "Tính năng". */
+  .nav-dropdown {
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-0.25rem);
+    transition:
+      opacity 120ms ease-in,
+      transform 120ms ease-in,
+      visibility 0s linear 120ms;
+  }
+  .nav-dropdown[data-open],
+  html:not(.js) .nav-features:hover > .nav-dropdown,
+  html:not(.js) .nav-features:focus-within > .nav-dropdown {
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 180ms ease-out,
+      transform 180ms cubic-bezier(0.16, 1, 0.3, 1),
+      visibility 0s;
+  }
+  .nav-chevron {
+    transition: rotate 180ms ease;
+  }
+  [aria-expanded='true'] > .nav-chevron {
+    rotate: 180deg;
+  }
   /* Tắt JS: không có nút menu, danh sách link hiện sẵn dưới header */
   html:not(.js) .mobile-menu {
     grid-template-rows: 1fr;
@@ -269,7 +289,10 @@
     .mobile-menu,
     .mobile-menu[data-open],
     .mobile-menu li,
-    .mobile-menu[data-open] li {
+    .mobile-menu[data-open] li,
+    .nav-dropdown,
+    .nav-dropdown[data-open],
+    .nav-chevron {
       transition-duration: 0s;
       transition-delay: 0s;
     }

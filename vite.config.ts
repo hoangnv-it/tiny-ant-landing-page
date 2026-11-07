@@ -8,9 +8,11 @@ import { imagetools } from 'vite-imagetools'
 import type {} from 'vite-react-ssg/node'
 import { site } from './src/content/vi.ts'
 
-/** sitemap.xml từ các trang đã prerender trong dist (index.html -> /, abc.html -> /abc). */
+/** sitemap.xml từ các trang đã prerender trong dist (index.html -> /, abc.html -> /abc,
+ * huong-dan/xyz.html -> /huong-dan/xyz). Bỏ trang 404. */
 async function writeSitemap(dir: string) {
-  const pages = (await readdir(dir))
+  const pages = (await readdir(dir, { recursive: true }))
+    .map((f) => f.replace(/\\/g, '/'))
     .filter((f) => f.endsWith('.html') && f !== '404.html')
     .map((f) => (f === 'index.html' ? '/' : `/${f.replace(/\.html$/, '')}`))
     .sort()
@@ -54,11 +56,16 @@ export default defineConfig(({ command, isSsrBuild }) => ({
     // đều phục vụ file này ở URL không có "/" cuối (khớp với link trong trang).
     dirStyle: 'flat',
     // react-helmet chèn title/meta lên đầu <head>, đẩy <meta charset> ra sau 1 KB đầu: đưa nó về đầu
-    onPageRendered: (_route, html) => {
+    onPageRendered: (_route, rendered) => {
+      // Route lazy: vite-react-ssg tự chèn preload cho MỌI ảnh mà chunk của route có thể dùng
+      // (cả trăm ảnh vì illustrations.ts gom hết ảnh). Bỏ đi; preload ảnh hero tự đặt có data-rh.
+      const html = rendered.replace(/<link rel="preload" as="image" href="[^"]*"[^>]*>/g, '')
       const charset = html.match(/<meta charset=[^>]*>/i)?.[0]
       return charset ? html.replace(charset, '').replace(/<head>/i, `<head>${charset}`) : html
     },
     onFinished: writeSitemap,
+    // Route '*' (404) không tự prerender: xuất thành /404 -> dist/404.html
+    includedRoutes: (paths) => paths.map((p) => (p === '/*' || p === '*' ? '/404' : p)),
     // Có cài `beasties`: CSS cần cho màn hình đầu được nhúng vào HTML, file CSS đầy đủ tải bất đồng bộ
     // (preload + onload, kèm <noscript> cho trình duyệt tắt JS)
     beastiesOptions: { preload: 'swap', noscriptFallback: true },

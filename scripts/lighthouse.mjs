@@ -1,5 +1,6 @@
 // Lighthouse (mobile, cấu hình mặc định) trên bản build. Dùng: npm run build && npm run check:lighthouse
 // Báo cáo đầy đủ: shots/lighthouse-<nhãn>.html|json (nhãn mặc định "latest", truyền --label=ten)
+// Trang khác trang chủ: --path=/quan-ly-hoc-phi
 import { writeFile, mkdir } from 'node:fs/promises'
 import { preview } from 'vite'
 import { chromium } from 'playwright'
@@ -7,8 +8,9 @@ import * as chromeLauncher from 'chrome-launcher'
 import lighthouse from 'lighthouse'
 
 const label = process.argv.find((a) => a.startsWith('--label='))?.slice(8) ?? 'latest'
+const path = process.argv.find((a) => a.startsWith('--path='))?.slice(7) ?? '/'
 const server = await preview({ preview: { port: 4192, strictPort: false } })
-const url = server.resolvedUrls.local[0]
+const url = server.resolvedUrls.local[0].replace(/\/$/, '') + path
 const chrome = await chromeLauncher.launch({
   chromePath: chromium.executablePath(),
   chromeFlags: ['--headless=new', '--no-sandbox'],

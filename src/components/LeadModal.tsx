@@ -6,7 +6,7 @@ import { isValidPhone, normalizePhone, readSource, sendLead } from '../lib/lead'
 import { LEAD_OPEN_EVENT, type LeadOpenDetail } from '../lib/leadModal'
 import { lockScroll, unlockScroll } from '../lib/scrollLock'
 import { createTurnstile } from '../lib/turnstile'
-import { contact, leadForm as t, privacyAnchor } from '../content/vi'
+import { contact, leadForm as t, privacyPath } from '../content/vi'
 
 const SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY
 // Phải khớp thời gian hiệu ứng đóng dài nhất trong index.css (.lead-dialog, mobile 200ms)
@@ -324,10 +324,15 @@ export default function LeadModal() {
               </Button>
 
               <p className="text-xs leading-relaxed text-text-muted">
-                {t.consentLead}{' '}
-                {/* Mở pop-up chính sách chồng lên form (PrivacyModal), đóng thì quay lại form */}
-                <a href={privacyAnchor} className="font-semibold text-ink underline">
+                {t.consentLead} {/* Mở tab mới để không mất phần đang điền trong form */}
+                <a
+                  href={privacyPath}
+                  target="_blank"
+                  rel="noopener"
+                  className="font-semibold text-ink underline"
+                >
                   {t.consentLink}
+                  <span className="sr-only"> {t.newTab}</span>
                 </a>
                 .
               </p>

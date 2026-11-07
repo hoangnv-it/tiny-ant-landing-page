@@ -10,8 +10,8 @@ const headingClass = 'font-heading text-sm font-bold tracking-wide text-ink uppe
 const linkClass =
   'inline-flex min-h-11 items-center text-text-muted transition-colors hover:text-ink hover:underline'
 
-// Footer kiểu trang cuối sách cũ: kẻ đôi phía trên, 4 cột (giới thiệu | Dành cho | Tìm hiểu | Liên hệ),
-// dải bản quyền dưới cùng. Mobile: giới thiệu, 2 cột link cạnh nhau, liên hệ.
+// Footer kiểu trang cuối sách cũ: kẻ đôi phía trên; giới thiệu | 4 cột link (link tới mọi trang) | liên hệ;
+// dải bản quyền dưới cùng. Mobile: giới thiệu, link 2 cột, liên hệ.
 export default function Footer() {
   const { pathname } = useLocation()
   // Ở trang chủ dùng neo thuần (#…) để không tải lại trang khi URL có ?utm_…
@@ -34,7 +34,7 @@ export default function Footer() {
 
   return (
     <footer className="mt-section border-t-4 border-double border-border bg-paper-dark/60 lg:mt-section-lg">
-      <Container className="grid gap-10 py-12 md:grid-cols-2 lg:grid-cols-[1.35fr_2fr_1.25fr] lg:gap-12 lg:py-14">
+      <Container className="grid gap-10 py-12 md:grid-cols-2 lg:grid-cols-[1.1fr_2.8fr_1.1fr] lg:gap-10 lg:py-14">
         <div>
           <Logo />
           <p className="mt-4 max-w-xs text-sm text-text-muted">{footer.about}</p>
@@ -46,7 +46,10 @@ export default function Footer() {
           </div>
         </div>
 
-        <nav aria-label={footer.label} className="grid grid-cols-2 gap-6">
+        <nav
+          aria-label={footer.label}
+          className="grid grid-cols-2 gap-6 sm:grid-cols-4 md:order-last md:col-span-2 lg:order-none lg:col-span-1"
+        >
           {footer.columns.map((col) => (
             <div key={col.title}>
               <h2 className={headingClass}>{col.title}</h2>
@@ -63,7 +66,7 @@ export default function Footer() {
           ))}
         </nav>
 
-        <div className="md:col-span-2 lg:col-span-1">
+        <div>
           <h2 className={headingClass}>{footer.contactTitle}</h2>
           <ul className="mt-3 text-sm">
             {contacts.map((c) => (

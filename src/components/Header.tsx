@@ -1,28 +1,50 @@
-import { useRef, useState, type KeyboardEvent } from 'react'
+import { useEffect, useRef, useState, type FocusEvent, type KeyboardEvent } from 'react'
 import { useLocation } from 'react-router-dom'
 import Button from './Button'
 import Container from './Container'
+import Icon from './icons'
 import Logo from './Logo'
-import { demoAnchor, nav } from '../content/vi'
+import { demoAnchor, featurePages, nav } from '../content/vi'
 
 const linkClass = 'font-semibold text-ink hover:underline'
 
-// Header dính trên cùng. Từ lg: link ngang. Dưới lg: logo + nút demo + nút menu.
+// Header dính trên cùng. Từ lg: "Tính năng" (menu thả xuống 5 trang) + link ngang.
+// Dưới lg: logo + nút dùng thử + nút menu; menu mobile liệt kê đủ các trang.
 export default function Header() {
   const [open, setOpen] = useState(false)
+  const [featOpen, setFeatOpen] = useState(false)
   const { pathname } = useLocation()
   // Ở trang chủ dùng neo thuần (#…): đổi /#… thành #… để không tải lại trang khi URL có ?utm_…
   const here = (href: string) => (pathname === '/' && href.startsWith('/#') ? href.slice(1) : href)
   const toggle = useRef<HTMLButtonElement>(null)
+  const featButton = useRef<HTMLButtonElement>(null)
+  const featItem = useRef<HTMLLIElement>(null)
 
   const close = () => setOpen(false)
-  // Esc khi focus đang trong header (nút menu hoặc link trong menu): đóng và trả focus về nút
+  // Esc khi focus đang trong header: đóng menu đang mở và trả focus về nút đã mở nó
   const onKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Escape' && open) {
+    if (e.key !== 'Escape') return
+    if (featOpen) {
+      setFeatOpen(false)
+      featButton.current?.focus()
+    } else if (open) {
       close()
       toggle.current?.focus()
     }
   }
+  // Focus rời khỏi menu "Tính năng" (Tab ra ngoài): đóng
+  const onFeatBlur = (e: FocusEvent) => {
+    if (!featItem.current?.contains(e.relatedTarget as Node | null)) setFeatOpen(false)
+  }
+  // Bấm ra ngoài menu "Tính năng": đóng (không cần phản hồi tức thì nên dùng listener trong effect)
+  useEffect(() => {
+    if (!featOpen) return
+    const onDown = (e: MouseEvent) => {
+      if (!featItem.current?.contains(e.target as Node)) setFeatOpen(false)
+    }
+    document.addEventListener('mousedown', onDown)
+    return () => document.removeEventListener('mousedown', onDown)
+  }, [featOpen])
 
   return (
     <header
@@ -33,7 +55,38 @@ export default function Header() {
         <Logo priority />
 
         <nav aria-label={nav.label} className="mx-auto hidden lg:block">
-          <ul className="flex items-center gap-9 text-sm">
+          <ul className="flex items-center gap-8 text-sm">
+            <li ref={featItem} onBlur={onFeatBlur} className="nav-features relative">
+              <button
+                ref={featButton}
+                type="button"
+                aria-expanded={featOpen}
+                aria-controls="menu-tinh-nang"
+                onClick={() => setFeatOpen((v) => !v)}
+                className={`inline-flex min-h-11 items-center gap-0.5 ${linkClass}`}
+              >
+                {nav.featuresLabel}
+                <Icon name="expandMore" className="nav-chevron size-5" />
+              </button>
+              {/* Luôn có trong HTML prerender; ẩn/hiện bằng data-open (.nav-dropdown trong index.css) */}
+              <ul
+                id="menu-tinh-nang"
+                data-open={featOpen ? '' : undefined}
+                className="nav-dropdown absolute top-full left-1/2 z-50 w-80 -translate-x-1/2 rounded-caption border border-border bg-card p-2 shadow-card"
+              >
+                {featurePages.map((l) => (
+                  <li key={l.href}>
+                    <a
+                      href={l.href}
+                      className="block rounded-panel px-3 py-2.5 hover:bg-paper-dark"
+                    >
+                      <span className="block font-semibold text-ink">{l.label}</span>
+                      <span className="block text-text-muted">{l.desc}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </li>
             {nav.links.map((l) => (
               <li key={l.href}>
                 <a href={here(l.href)} className={`inline-flex min-h-11 items-center ${linkClass}`}>
@@ -82,7 +135,24 @@ export default function Header() {
       >
         {/* Lớp bọc co về cao 0 khi đóng (cắt cả viền và padding của danh sách) */}
         <div>
-          <Container as="ul" className="flex flex-col border-t border-border py-2">
+          <Container
+            as="ul"
+            className="flex max-h-[calc(100dvh-var(--spacing-header))] flex-col overflow-y-auto border-t border-border py-2"
+          >
+            <li>
+              <p className="pt-3 pb-1 text-xs font-bold tracking-wide text-text-muted uppercase">
+                {nav.featuresLabel}
+              </p>
+              <ul className="border-l-2 border-border pl-4">
+                {featurePages.map((l) => (
+                  <li key={l.href}>
+                    <a href={l.href} onClick={close} className={`block py-2.5 ${linkClass}`}>
+                      {l.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </li>
             {nav.links.map((l) => (
               <li key={l.href}>
                 <a href={here(l.href)} onClick={close} className={`block py-3 ${linkClass}`}>

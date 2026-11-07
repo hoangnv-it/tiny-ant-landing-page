@@ -1,0 +1,15 @@
+// Cloudflare Workers (chỉ phục vụ file tĩnh). Build: npm run build -> thư mục dist.
+// Biến VITE_* nhúng vào trang lúc build: đặt ở Settings > Build > Variables and secrets,
+// không phải ở Variables and Secrets (runtime) của Worker.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tiny-ant-landing-page",
+  "compatibility_date": "2025-09-01",
+  "assets": {
+    "directory": "./dist",
+    // Trang phẳng (ten-trang.html) phục vụ ở /ten-trang, không có "/" cuối
+    "html_handling": "drop-trailing-slash",
+    // Đường dẫn không tồn tại: trả 404 (có thể thêm dist/404.html sau)
+    "not_found_handling": "404-page"
+  }
+}

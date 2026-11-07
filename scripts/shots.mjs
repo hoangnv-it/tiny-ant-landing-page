@@ -6,7 +6,12 @@ import { mkdir } from 'node:fs/promises'
 import { preview } from 'vite'
 import { chromium } from 'playwright'
 
-const ROUTES = [['home', '/']]
+const ROUTES = [
+  ['home', '/'],
+  ['hoc-phi', '/quan-ly-hoc-phi'],
+  ['bang-gia', '/bang-gia'],
+  ['huong-dan', '/huong-dan/quan-ly-hoc-phi-lop-hoc-them'],
+]
 const WIDTHS = [375, 768, 1280, 1440]
 const OUT = 'shots'
 
