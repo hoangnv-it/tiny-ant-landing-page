@@ -440,14 +440,14 @@ export const home = {
 } as const
 
 // 4 gói theo số học sinh: dùng ở trang chủ và /bang-gia.
-// price: null khi chưa có giá thật -> hiện `pricePending`, không ghi `offers` vào schema.
+// price: null khi chưa có giá thật -> ẩn dòng giá trên trang, không ghi `offers` vào schema.
+// [[TODO: giá]] — điền số tiền thật (đồng/tháng) vào price của từng gói.
 export const pricingTiers: readonly { name: string; price: number | null }[] = [
   { name: '1–50 học sinh', price: null },
   { name: '51–100 học sinh', price: null },
   { name: '101–200 học sinh', price: null },
   { name: 'Trên 200 học sinh', price: null },
 ]
-export const pricePending = '[[TODO: giá]]'
 export const priceUnit = 'đồng/tháng'
 
 // Trang /bang-gia

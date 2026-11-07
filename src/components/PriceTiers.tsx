@@ -1,11 +1,6 @@
 import type { ReactNode } from 'react'
 import PaperCard from './PaperCard'
-import { pricePending, priceUnit, pricingTiers } from '../content/vi'
-
-/** Giá hiển thị: số thật nếu đã có, chưa có thì hiện chỗ chờ điền */
-function formatPrice(price: number | null) {
-  return price === null ? pricePending : `${price.toLocaleString('vi-VN')} ${priceUnit}`
-}
+import { priceUnit, pricingTiers } from '../content/vi'
 
 type Props = {
   /** Thẻ tiêu đề mỗi gói (h3 ở trang có h2 bao ngoài) */
@@ -22,7 +17,12 @@ export default function PriceTiers({ heading: H = 'h3', extra, className = '' }:
       {pricingTiers.map((t, i) => (
         <PaperCard as="li" key={t.name} className="flex flex-col p-4 text-center shadow-card">
           <H className="font-heading text-h3 font-bold text-ink">{t.name}</H>
-          <p className="mt-1 text-sm text-text-muted">{formatPrice(t.price)}</p>
+          {/* Chưa có giá thật (price: null) thì ẩn hẳn dòng giá */}
+          {t.price !== null && (
+            <p className="mt-1 text-sm text-text-muted">
+              {t.price.toLocaleString('vi-VN')} {priceUnit}
+            </p>
+          )}
           {extra?.(i)}
         </PaperCard>
       ))}
