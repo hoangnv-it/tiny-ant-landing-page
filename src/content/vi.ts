@@ -26,6 +26,65 @@ export const demoAnchor = '/#dang-ky'
 // Mở pop-up Chính sách bảo mật (PrivacyModal)
 export const privacyAnchor = '#chinh-sach-bao-mat'
 
+// Các trang con: dùng cho menu, footer, link "liên quan". Nội dung từng trang: src/content/features/*.ts
+export const featurePages = [
+  {
+    href: '/quan-ly-hoc-phi',
+    label: 'Quản lý học phí',
+    desc: 'Học phí theo tháng, biên lai, tự động nhắc, đối soát chuyển khoản.',
+  },
+  {
+    href: '/kiem-tra-dau-vao',
+    label: 'Kiểm tra đầu vào',
+    desc: 'Link thi thử xếp lớp tự chấm, hẹn học thử, phễu tuyển sinh.',
+  },
+  {
+    href: '/diem-danh-hoc-sinh',
+    label: 'Điểm danh học sinh',
+    desc: 'Điểm danh nhanh, báo vắng tức thì, buổi học bù, phiếu mã QR.',
+  },
+  {
+    href: '/giao-bai-tap-online',
+    label: 'Giao bài tập online',
+    desc: 'Bài tập có hạn nộp, bài kiểm tra tự chấm, thư viện bài.',
+  },
+  {
+    href: '/bao-cao-phu-huynh',
+    label: 'Báo cáo phụ huynh',
+    desc: 'Báo vắng, tóm tắt buổi tối, báo cáo học tập hằng tuần.',
+  },
+] as const
+export const audiencePages = [
+  {
+    href: '/hoc-sinh',
+    label: 'Dành cho học sinh',
+    desc: 'Màn hình Hôm nay, nhiệm vụ 5 phút, game từ vựng, huy hiệu.',
+  },
+  {
+    href: '/nha-truong',
+    label: 'Dành cho nhà trường',
+    desc: 'Giao bài, chấm bài tự động cho giáo viên trường.',
+  },
+] as const
+export const pageLinks: readonly { href: string; label: string; desc: string }[] = [
+  ...featurePages,
+  ...audiencePages,
+]
+export const pricingPath = '/bang-gia'
+export const privacyPath = '/chinh-sach-bao-mat'
+export const guidesPath = '/huong-dan'
+
+// Chữ dùng chung của các trang con
+export const subpage = {
+  breadcrumbLabel: 'Bạn đang ở',
+  home: 'Trang chủ',
+  painsLesson: 'Có quen không?',
+  howToLesson: 'Cách dùng',
+  relatedLesson: 'Xem thêm',
+  relatedTitle: 'Tính năng liên quan',
+  faqLesson: 'Câu hỏi thường gặp',
+}
+
 export const nav = {
   label: 'Điều hướng chính',
   links: [
