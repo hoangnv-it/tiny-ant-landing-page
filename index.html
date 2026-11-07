@@ -7,6 +7,8 @@
     <!-- Đánh dấu có JavaScript trước lần vẽ đầu: CSS dùng .js / :not(.js) cho bản tắt JS -->
     <script>
       document.documentElement.classList.add('js')
+      // Link cũ /#chinh-sach-bao-mat (pop-up trước đây) -> trang riêng
+      if (location.hash === '#chinh-sach-bao-mat') location.replace('/chinh-sach-bao-mat')
     </script>
     <meta name="theme-color" content="#f2e4cc" />
     <meta property="og:site_name" content="Tiny Ant" />

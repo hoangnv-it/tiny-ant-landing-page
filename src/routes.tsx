@@ -24,6 +24,13 @@ export const routes: RouteRecord[] = [
   {
     path: '/',
     element: <Layout />,
-    children: [{ index: true, element: <Home /> }, ...featureRoutes],
+    children: [
+      { index: true, element: <Home /> },
+      ...featureRoutes,
+      { path: 'bang-gia', lazy: () => import('./pages/Pricing') },
+      { path: 'chinh-sach-bao-mat', lazy: () => import('./pages/Privacy') },
+      // Mọi đường dẫn khác: trang 404 (prerender ra dist/404.html, xem includedRoutes trong vite.config.ts)
+      { path: '*', lazy: () => import('./pages/NotFound') },
+    ],
   },
 ]

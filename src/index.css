@@ -65,14 +65,6 @@
   html:not(.js) [role='tabpanel'] + [role='tabpanel'] {
     margin-top: 1rem;
   }
-  /* Chính sách bảo mật: không có JS thì link #chinh-sach-bao-mat hiện nội dung ngay trong trang */
-  html:not(.js) dialog#chinh-sach-bao-mat:target {
-    display: block;
-    position: static;
-    opacity: 1;
-    transform: none;
-    margin: 2rem auto;
-  }
   html:not(.js) .js-only,
   .js .nojs-only {
     display: none !important;

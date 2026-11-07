@@ -23,8 +23,6 @@ export const site = {
 
 // Mục tiêu của nút "Đăng ký dùng thử": pop-up đăng ký
 export const demoAnchor = '/#dang-ky'
-// Mở pop-up Chính sách bảo mật (PrivacyModal)
-export const privacyAnchor = '#chinh-sach-bao-mat'
 
 // Các trang con: dùng cho menu, footer, link "liên quan". Nội dung từng trang: src/content/features/*.ts
 export const featurePages = [
@@ -120,7 +118,7 @@ export const footer = {
         { href: '/#bat-dau', label: 'Bắt đầu trong 3 bước' },
         { href: '/#bang-gia', label: 'Bảng giá' },
         { href: '/#faq', label: 'Câu hỏi thường gặp' },
-        { href: privacyAnchor, label: 'Chính sách bảo mật' },
+        { href: privacyPath, label: 'Chính sách bảo mật' },
       ],
     },
   ],
@@ -436,6 +434,134 @@ export const pricingTiers: readonly { name: string; price: number | null }[] = [
 export const pricePending = '[[TODO: giá]]'
 export const priceUnit = 'đồng/tháng'
 
+// Trang /bang-gia
+export const pricingPage = {
+  meta: {
+    title: 'Bảng giá phần mềm quản lý trung tâm học thêm | Tiny Ant',
+    description:
+      'Bảng giá Tiny Ant theo số học sinh: 1–50, 51–100, 101–200 và trên 200 học sinh. Dùng thử miễn phí trước khi đăng ký phần mềm quản lý trung tâm học thêm.',
+  },
+  crumb: 'Bảng giá',
+  lesson: 'Bảng giá',
+  title: 'Bảng giá Tiny Ant theo số học sinh',
+  lead: 'Trung tâm chọn gói theo số học sinh đang theo học. Lớp nhỏ chọn gói nhỏ, không phải trả cho phần không dùng tới. Trước khi đăng ký, trung tâm được dùng thử miễn phí.',
+  tiersTitle: 'Bốn gói theo quy mô trung tâm',
+  allFeatures: 'Tất cả tính năng',
+  tierNote: '[[TODO: xác nhận phân gói. Hiện ghi mọi gói đều có tất cả tính năng]]',
+  tierCta: 'Dùng thử miễn phí',
+  includedLesson: 'Gói nào cũng có',
+  includedTitle: 'Tính năng có trong mọi gói',
+  groups: [
+    {
+      title: 'Tuyển sinh',
+      href: '/kiem-tra-dau-vao',
+      items: [
+        'Link thi thử xếp lớp, tự chấm, xếp trình độ',
+        'Hẹn học thử miễn phí vào buổi học thật',
+        'Phễu tuyển sinh: Quan tâm → Ghi danh',
+      ],
+    },
+    {
+      title: 'Vận hành lớp',
+      href: '/diem-danh-hoc-sinh',
+      items: [
+        'Thời khoá biểu, buổi học, buổi học bù',
+        'Điểm danh nhanh, báo vắng tức thì',
+        'Tạo tài khoản hàng loạt, phiếu mã QR',
+      ],
+    },
+    {
+      title: 'Bài tập và kiểm tra',
+      href: '/giao-bai-tap-online',
+      items: [
+        'Bài tập có hạn nộp, xem ai chưa nộp',
+        'Bài kiểm tra có giờ, tự chấm',
+        'Thư viện bài, ghi âm buổi học',
+      ],
+    },
+    {
+      title: 'Học phí',
+      href: '/quan-ly-hoc-phi',
+      items: [
+        'Học phí theo tháng, sửa riêng từng lớp',
+        'Biên lai, tự động nhắc học phí',
+        'Đối soát sao kê chuyển khoản',
+      ],
+    },
+    {
+      title: 'Phụ huynh',
+      href: '/bao-cao-phu-huynh',
+      items: [
+        'Báo vắng, tóm tắt buổi tối',
+        'Báo cáo học tập hằng tuần',
+        'Tab Học phí, chuyển tài khoản bằng mã PIN',
+      ],
+    },
+    {
+      title: 'Học sinh',
+      href: '/hoc-sinh',
+      items: [
+        'Màn hình Hôm nay, nhiệm vụ 5 phút',
+        'Chuỗi ngày học, huy hiệu, bảng xếp hạng',
+        'Luyện câu sai, game từ vựng',
+      ],
+    },
+  ],
+  groupLink: 'Xem chi tiết',
+  faq: {
+    title: 'Hỏi đáp về bảng giá',
+    items: [
+      {
+        q: 'Dùng thử miễn phí thế nào?',
+        a: 'Anh/chị đăng ký dùng thử, Tiny Ant gọi lại trong 1 ngày làm việc để hướng dẫn bắt đầu. [[TODO: thời gian dùng thử]]',
+      },
+      {
+        q: 'Thanh toán bằng cách nào?',
+        a: '[[TODO: cách thanh toán và chu kỳ thanh toán]]',
+      },
+      {
+        q: 'Số học sinh tăng thì có đổi gói được không?',
+        a: '[[TODO: chính sách đổi gói khi số học sinh thay đổi]]',
+      },
+      {
+        q: 'Có phải cài đặt gì không?',
+        a: 'Không. Tiny Ant chạy trên trình duyệt của điện thoại và máy tính. Thêm vào màn hình chính là dùng như app, không cần tải từ App Store hay CH Play.',
+      },
+    ],
+  },
+}
+
+// Trang /huong-dan (danh sách bài). Nội dung từng bài: src/content/guides/*.ts
+export const guidesPage = {
+  meta: {
+    title: 'Hướng dẫn quản lý trung tâm học thêm | Tiny Ant',
+    description:
+      'Bài hướng dẫn thực tế cho chủ trung tâm học thêm: quản lý và nhắc học phí, thiết kế bài kiểm tra đầu vào, báo cáo học tập hằng tuần cho phụ huynh.',
+  },
+  crumb: 'Hướng dẫn',
+  lesson: 'Hướng dẫn',
+  title: 'Hướng dẫn quản lý trung tâm học thêm',
+  lead: 'Kinh nghiệm thực tế về học phí, tuyển sinh và làm việc với phụ huynh, dùng được cho mọi trung tâm, dù có dùng Tiny Ant hay không.',
+  readMore: 'Đọc bài',
+  published: 'Đăng ngày',
+  author: 'Tiny Ant',
+  authorLabel: 'Tác giả',
+}
+
+// Trang 404
+export const notFound = {
+  meta: {
+    title: 'Không tìm thấy trang | Tiny Ant',
+    description:
+      'Trang thầy cô tìm không có trên tinyant.app. Về trang chủ hoặc xem các tính năng của Tiny Ant.',
+  },
+  lesson: 'Lỗi 404',
+  title: 'Không tìm thấy trang này',
+  text: 'Đường dẫn có thể đã thay đổi hoặc bị gõ nhầm. Thầy cô thử một trong các trang dưới đây nhé.',
+  homeLink: 'Về trang chủ',
+  listTitle: 'Các trang của Tiny Ant',
+}
+
 // Pop-up đăng ký dùng thử — dùng chung cho mọi nút "Đăng ký dùng thử" trên mọi trang
 export const leadForm = {
   title: 'Đăng ký dùng thử miễn phí',
@@ -463,11 +589,17 @@ export const leadForm = {
   consentLead:
     'Khi bấm “Gửi đăng ký”, thầy cô đồng ý để Tiny Ant liên hệ qua số điện thoại trên, theo',
   consentLink: 'Chính sách bảo mật',
+  newTab: '(mở trong tab mới)',
 }
 
 // BẢN NHÁP — cần người có chuyên môn pháp lý rà soát trước khi đăng chính thức.
 export const privacy = {
-  closeLabel: 'Đóng chính sách bảo mật',
+  meta: {
+    title: 'Chính sách bảo mật | Tiny Ant',
+    description:
+      'Chính sách bảo mật của Tiny Ant: dữ liệu thu thập khi thầy cô đăng ký dùng thử trên tinyant.app, dùng vào việc gì, lưu ở đâu và quyền của thầy cô.',
+  },
+  lesson: 'Thông tin pháp lý',
   title: 'Chính sách bảo mật',
   updated: 'Có hiệu lực từ ngày 01/11/2026',
   intro:

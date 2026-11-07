@@ -2,7 +2,6 @@ import { Outlet } from 'react-router-dom'
 import Footer from './Footer'
 import Header from './Header'
 import LeadModal from './LeadModal'
-import PrivacyModal from './PrivacyModal'
 
 export default function Layout() {
   return (
@@ -13,9 +12,8 @@ export default function Layout() {
         <Outlet />
       </main>
       <Footer />
-      {/* Pop-up dùng chung: đăng ký demo, chính sách bảo mật */}
+      {/* Pop-up đăng ký dùng thử, dùng chung mọi trang */}
       <LeadModal />
-      <PrivacyModal />
     </div>
   )
 }

@@ -59,6 +59,8 @@ export default defineConfig(({ command, isSsrBuild }) => ({
       return charset ? html.replace(charset, '').replace(/<head>/i, `<head>${charset}`) : html
     },
     onFinished: writeSitemap,
+    // Route '*' (404) không tự prerender: xuất thành /404 -> dist/404.html
+    includedRoutes: (paths) => paths.map((p) => (p === '/*' || p === '*' ? '/404' : p)),
     // Có cài `beasties`: CSS cần cho màn hình đầu được nhúng vào HTML, file CSS đầy đủ tải bất đồng bộ
     // (preload + onload, kèm <noscript> cho trình duyệt tắt JS)
     beastiesOptions: { preload: 'swap', noscriptFallback: true },

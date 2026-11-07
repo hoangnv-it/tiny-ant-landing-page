@@ -8,20 +8,31 @@ type Props = {
   path: string
   /** Dữ liệu có cấu trúc (schema.org), render thành <script type="application/ld+json"> */
   jsonLd?: object
+  /** Trang 404: noindex, không canonical */
+  noindex?: boolean
+  /** og:type, mặc định "website"; bài hướng dẫn dùng "article" */
+  type?: 'website' | 'article'
 }
 
 const OG_IMAGE = `${site.url}/og-image.png`
 
 // Thẻ SEO theo route. Thẻ dùng chung (og:site_name, og:locale, theme-color, icon) nằm trong index.html.
-export default function Seo({ title, description, path, jsonLd }: Props) {
+export default function Seo({
+  title,
+  description,
+  path,
+  jsonLd,
+  noindex,
+  type = 'website',
+}: Props) {
   const url = site.url + path
   return (
     <Head>
       <title>{title}</title>
       <meta name="description" content={description} />
-      <link rel="canonical" href={url} />
+      {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={url} />}
 
-      <meta property="og:type" content="website" />
+      <meta property="og:type" content={type} />
       <meta property="og:url" content={url} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
