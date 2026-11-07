@@ -88,6 +88,18 @@ const article: ArticleContent = {
         'Những tin lặp lại đều đặn như báo vắng, nhắc bài, báo cáo tuần thì tự động hoá nếu có công cụ.',
       ],
     },
+    { h2: 'Bắt đầu ngay từ tuần này' },
+    {
+      p: 'Không cần làm hoàn hảo ngay từ đầu. Một bản báo cáo đơn giản nhưng đều đặn có giá trị hơn bản báo cáo chi tiết mà lúc có lúc không.',
+    },
+    {
+      ol: [
+        'Chọn một ngày cố định trong tuần để gửi báo cáo, và báo cho phụ huynh biết.',
+        'Lập sẵn mẫu báo cáo với năm mục: chuyên cần, bài tập, điểm, nhận xét, việc tuần tới.',
+        'Ghi chú ngắn ngay sau mỗi buổi học, để cuối tuần chỉ còn việc tổng hợp.',
+        'Gửi thử cho một lớp trong hai ba tuần, hỏi phụ huynh thấy thế nào rồi mới áp dụng cho cả trung tâm.',
+      ],
+    },
     { h2: 'Khi phụ huynh lo lắng hoặc không hài lòng' },
     {
       p: 'Báo cáo trung thực đôi khi sẽ khiến phụ huynh lo, ví dụ khi điểm con đi xuống. Hãy gọi điện thay vì nhắn tin cho những chuyện cần trao đổi sâu, lắng nghe trước khi giải thích, và cùng phụ huynh thống nhất một việc cụ thể cho tuần tới. Phụ huynh thường đánh giá cao trung tâm báo sớm, ngay cả khi tin không vui.',

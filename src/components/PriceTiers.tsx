@@ -3,7 +3,7 @@ import PaperCard from './PaperCard'
 import { pricePending, priceUnit, pricingTiers } from '../content/vi'
 
 /** Giá hiển thị: số thật nếu đã có, chưa có thì hiện chỗ chờ điền */
-export function formatPrice(price: number | null) {
+function formatPrice(price: number | null) {
   return price === null ? pricePending : `${price.toLocaleString('vi-VN')} ${priceUnit}`
 }
 

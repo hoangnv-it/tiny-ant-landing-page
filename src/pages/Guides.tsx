@@ -2,9 +2,9 @@ import Container from '../components/Container'
 import Icon from '../components/icons'
 import PageHero from '../components/PageHero'
 import Seo from '../components/Seo'
+import { viDate } from '../lib/date'
 import { subpageJsonLd } from '../lib/structuredData'
 import { guides, guidesPage as g, guidesPath, subpage } from '../content/vi'
-import { viDate } from './ArticlePage'
 
 const crumbs = [
   { name: subpage.home, href: '/' },

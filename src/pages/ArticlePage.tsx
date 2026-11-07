@@ -3,13 +3,11 @@ import Icon from '../components/icons'
 import PageHero from '../components/PageHero'
 import PaperCard from '../components/PaperCard'
 import Seo from '../components/Seo'
+import { viDate } from '../lib/date'
 import { article, subpageJsonLd } from '../lib/structuredData'
 import FaqCtaSheet from '../sections/FaqCtaSheet'
 import type { ArticleBlock, ArticleContent, GuideMeta } from '../content/types'
 import { guidesPage, guidesPath, pageLinks, subpage } from '../content/vi'
-
-/** 2026-11-07 -> 07/11/2026 */
-export const viDate = (iso: string) => iso.split('-').reverse().join('/')
 
 // Khuôn bài hướng dẫn: breadcrumb, h1, ngày đăng + tác giả, thân bài (h2/h3/đoạn/danh sách/bảng/ghi chú),
 // cuối bài mới giới thiệu Tiny Ant kèm link sang trang tính năng, rồi khối đăng ký.
@@ -123,7 +121,13 @@ function Block({ block: b }: { block: ArticleBlock }) {
     )
   if ('table' in b)
     return (
-      <div className="mt-5 overflow-x-auto rounded-caption border border-border bg-card shadow-card">
+      // Bảng rộng cuộn ngang trên màn hẹp: khung nhận focus để cuộn bằng bàn phím
+      <div
+        role="region"
+        aria-label={b.table.caption}
+        tabIndex={0}
+        className="mt-5 overflow-x-auto rounded-caption border border-border bg-card shadow-card"
+      >
         <table className="w-full min-w-[32rem] border-collapse text-left text-sm">
           <caption className="sr-only">{b.table.caption}</caption>
           <thead className="bg-paper-dark font-heading text-ink">

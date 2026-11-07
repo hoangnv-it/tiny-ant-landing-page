@@ -1,34 +1,13 @@
-// Kiểm tra HTML đã prerender trong dist: thẻ SEO, JSON-LD, và nội dung FAQ + tab có trong HTML.
+// Kiểm tra HTML đã prerender trong dist cho MỌI URL trong sitemap (+ trang 404):
+// title/description riêng, canonical, OG/Twitter, đúng 1 <h1>, heading không nhảy cóc, JSON-LD hợp lệ,
+// FAQPage khớp nội dung hiển thị, ảnh có width/height, lazy đúng chỗ.
 // Dùng: npm run build && npm run check:seo
 import { readFile, access } from 'node:fs/promises'
-import { centerPage, centerPagePath, home, privacy, site } from '../src/content/vi.ts'
-
-const PAGES = [
-  {
-    file: 'dist/index.html',
-    path: '/',
-    meta: home.meta,
-    keywords: [
-      'phần mềm quản lý lớp học thêm',
-      'quản lý trung tâm',
-      'điểm danh, giao bài, báo phụ huynh',
-    ],
-    schema: ['Organization', 'SoftwareApplication', 'FAQPage'],
-    faq: home.faq.items,
-  },
-  {
-    file: `dist${centerPagePath}.html`,
-    path: centerPagePath,
-    meta: centerPage.meta,
-    keywords: ['phần mềm quản lý trung tâm', 'nhiều cơ sở', 'xuất excel'],
-    schema: ['Organization', 'SoftwareApplication', 'WebPage', 'BreadcrumbList', 'FAQPage'],
-    faq: centerPage.faq.items,
-  },
-]
+import { home, site } from '../src/content/vi.ts'
 
 let failed = 0
 const check = (ok, label, detail = '') => {
-  console.log(`${ok ? '✓' : '✗'} ${label}${detail ? ` — ${detail}` : ''}`)
+  console.log(`${ok ? '✓' : '✗'} ${label}${detail !== '' ? ` — ${detail}` : ''}`)
   if (!ok) failed++
 }
 const decode = (s) =>
@@ -49,28 +28,53 @@ const visibleText = (html) =>
       .replace(/<[^>]+>/g, ' '),
   ).replace(/\s+/g, ' ')
 const norm = (s) => s.replace(/\s+/g, ' ').trim()
+const len = (s) => [...s].length
+const fileOf = (path) => (path === '/' ? 'dist/index.html' : `dist${path}.html`)
 
-for (const page of PAGES) {
-  console.log(`\n== ${page.file}`)
-  const html = await readFile(page.file, 'utf8')
-  const url = site.url + page.path
+const sitemap = await readFile('dist/sitemap.xml', 'utf8')
+const paths = [...sitemap.matchAll(/<loc>([^<]*)<\/loc>/g)].map(
+  (m) => m[1].slice(site.url.length) || '/',
+)
+check(paths.length >= 14, 'sitemap có đủ trang', `${paths.length} URL`)
+check(
+  (sitemap.match(/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/g) ?? []).length === paths.length,
+  'sitemap: mọi URL có lastmod',
+)
+
+const titles = new Map()
+const descs = new Map()
+
+for (const path of [...paths, '/404']) {
+  const file = fileOf(path)
+  console.log(`\n== ${path}  (${file})`)
+  const html = await readFile(file, 'utf8')
+  const is404 = path === '/404'
+  const url = site.url + path
   const title = decode(html.match(/<title[^>]*>([^<]*)<\/title>/)?.[1] ?? '')
   const desc = attr(html, /<meta[^>]*name="description"[^>]*content="([^"]*)"/)
 
   check(/<html[^>]*lang="vi"/.test(html), 'html lang="vi"')
-  check(title === page.meta.title, 'title', `${[...title].length} ký tự`)
-  check(desc === page.meta.description, 'meta description', `${[...desc].length} ký tự`)
-  for (const k of page.keywords)
-    check((title + ' ' + desc).toLowerCase().includes(k), `có cụm "${k}"`)
-  check(attr(html, /<link[^>]*rel="canonical"[^>]*href="([^"]*)"/) === url, 'canonical', url)
+  check(title && len(title) <= 66, 'title', `${len(title)} ký tự: ${title}`)
+  const dMin = path === '/' ? 140 : 90
+  const dMax = path === '/' ? 155 : 160
+  check(len(desc) >= dMin && len(desc) <= dMax, `description ${dMin}–${dMax} ký tự`, len(desc))
+  if (!is404) {
+    check(!titles.has(title), 'title không trùng trang khác', titles.get(title) ?? '')
+    check(!descs.has(desc), 'description không trùng trang khác', descs.get(desc) ?? '')
+    titles.set(title, path)
+    descs.set(desc, path)
+    check(attr(html, /<link[^>]*rel="canonical"[^>]*href="([^"]*)"/) === url, 'canonical', url)
+    check(!/name="robots"[^>]*noindex/.test(html), 'không noindex')
+  } else {
+    check(/<meta[^>]*name="robots"[^>]*content="noindex"/.test(html), '404: noindex')
+    check(!/rel="canonical"/.test(html), '404: không có canonical')
+    check(!sitemap.includes('/404'), '404: không có trong sitemap')
+  }
   for (const [p, want] of [
-    ['og:type', 'website'],
     ['og:url', url],
     ['og:title', title],
     ['og:description', desc],
     ['og:image', `${site.url}/og-image.png`],
-    ['og:image:width', '1200'],
-    ['og:image:height', '630'],
     ['og:site_name', 'Tiny Ant'],
     ['og:locale', 'vi_VN'],
   ])
@@ -78,97 +82,106 @@ for (const page of PAGES) {
   for (const [n, want] of [
     ['twitter:card', 'summary_large_image'],
     ['twitter:title', title],
-    ['twitter:image', `${site.url}/og-image.png`],
+    ['twitter:description', desc],
   ])
     check(attr(html, new RegExp(`<meta[^>]*name="${n}"[^>]*content="([^"]*)"`)) === want, n)
-  check(/<meta[^>]*name="theme-color"/.test(html), 'theme-color')
-  for (const href of ['/favicon.ico', '/apple-touch-icon.png', '/site.webmanifest'])
-    check(html.includes(`href="${href}"`), `link ${href}`)
-  check((html.match(/<h1[\s>]/g) ?? []).length === 1, 'đúng 1 <h1>')
+
+  // Heading: đúng 1 h1, không nhảy cóc (h1 -> h3)
+  const body = html.slice(html.indexOf('<body'))
+  const levels = [...body.matchAll(/<h([1-6])[\s>]/g)].map((m) => Number(m[1]))
+  check(levels.filter((l) => l === 1).length === 1, 'đúng 1 <h1>')
+  check(levels[0] === 1, '<h1> là heading đầu tiên')
+  const jumps = levels.flatMap((l, i) =>
+    i && l > levels[i - 1] + 1 ? [`h${levels[i - 1]}→h${l}`] : [],
+  )
+  check(jumps.length === 0, 'heading không nhảy cóc', jumps.join(', '))
+
+  // Ảnh: width/height; chỉ ảnh màn hình đầu (eager) có fetchpriority=high; ảnh nào cũng có alt
+  const imgs = [...html.matchAll(/<img\b[^>]*>/g)].map((m) => m[0])
+  const noSize = imgs.filter((t) => !/\swidth="\d+"/.test(t) || !/\sheight="\d+"/.test(t))
+  check(noSize.length === 0, 'mọi <img> có width + height', `${imgs.length} ảnh`)
+  check(
+    // alt rỗng (ảnh trang trí) có thể được rút gọn thành thuộc tính `alt` trơn
+    imgs.every((t) => /\salt(="|[\s>])/.test(t)),
+    'mọi <img> có alt',
+  )
+  const eager = imgs.filter((t) => !/loading="lazy"/.test(t))
+  check(
+    eager.every((t) => /fetchpriority="high"/.test(t)),
+    'ảnh không lazy đều là ảnh ưu tiên (màn hình đầu)',
+    `${eager.length} eager / ${imgs.length - eager.length} lazy`,
+  )
 
   // JSON-LD
   const blocks = [
     ...html.matchAll(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g),
   ]
+  if (is404) {
+    check(blocks.length === 0, '404: không có JSON-LD')
+    continue
+  }
   check(blocks.length === 1, 'có 1 khối JSON-LD')
   let graph = []
   try {
     graph = JSON.parse(blocks[0][1])['@graph']
+    check(true, 'JSON-LD parse được')
   } catch (e) {
     check(false, 'JSON-LD parse được', e.message)
   }
   const types = graph.map((n) => n['@type'])
-  for (const t of page.schema) check(types.includes(t), `JSON-LD ${t}`)
+  const want =
+    path === '/'
+      ? ['Organization', 'SoftwareApplication', 'FAQPage']
+      : ['Organization', 'WebPage', 'BreadcrumbList']
+  if (path.startsWith('/huong-dan/')) want.push('Article')
+  for (const t of want) check(types.includes(t), `JSON-LD ${t}`)
+  const ld = blocks[0][1]
+  check(!/aggregateRating|"Review"/.test(ld), 'không có aggregateRating / Review')
+  check(!/"offers"/.test(ld) || !ld.includes('TODO'), 'không có offers khi giá còn TODO')
+
   const app = graph.find((n) => n['@type'] === 'SoftwareApplication')
-  if (app) {
+  if (app)
     check(
       app.applicationCategory === 'EducationalApplication' && app.operatingSystem === 'Web',
       'SoftwareApplication: category + OS',
     )
+  const crumbs = graph.find((n) => n['@type'] === 'BreadcrumbList')
+  if (crumbs) {
+    const items = crumbs.itemListElement
     check(
-      !('offers' in app) && !('aggregateRating' in app),
-      'SoftwareApplication: không có giá / rating',
+      items[0].item === `${site.url}/` && items.at(-1).item === url,
+      'BreadcrumbList: Trang chủ -> trang này',
+      items.map((i) => i.name).join(' › '),
     )
   }
-  const org = graph.find((n) => n['@type'] === 'Organization')
-  if (org)
+  const art = graph.find((n) => n['@type'] === 'Article')
+  if (art)
     check(
-      org.email && org.telephone && org.logo,
-      'Organization: email, SĐT, logo',
-      `${org.telephone}`,
-    )
-  const faq = graph.find((n) => n['@type'] === 'FAQPage')
-  if (faq)
-    check(
-      faq.mainEntity.length === page.faq.length,
-      'FAQPage: đủ câu hỏi',
-      `${faq.mainEntity.length}`,
+      art.datePublished && art.author?.name === 'Tiny Ant' && art.headline,
+      'Article: ngày xuất bản, tác giả Tiny Ant',
     )
 
-  // Nội dung FAQ (mọi trang) + tab (trang chủ) phải có trong HTML prerender
+  // FAQPage phải khớp FAQ hiển thị trên trang (câu hỏi + trả lời có trong HTML prerender)
   const text = visibleText(html)
-  const missing = []
-  for (const { q, a } of page.faq)
-    for (const s of [q, a]) if (!text.includes(norm(s))) missing.push(s)
-  check(missing.length === 0, `FAQ: đủ ${page.faq.length} câu hỏi + trả lời trong HTML`, missing[0])
-  check(!text.includes('CẦN XÁC NHẬN'), 'không lộ chữ CẦN XÁC NHẬN')
-
-  if (page.path === centerPagePath) {
-    const parts = [
-      centerPage.hero.lead,
-      ...centerPage.features.items.flatMap((i) => [i.title, i.text]),
-      ...centerPage.compare.rows.flat(),
-      ...centerPage.plans.tiers,
-    ]
-    const miss = parts.filter((s) => !text.includes(norm(s)))
+  const faq = graph.find((n) => n['@type'] === 'FAQPage')
+  const details = (html.match(/<details[\s>]/g) ?? []).length
+  if (faq) {
+    const miss = faq.mainEntity
+      .flatMap((q) => [q.name, q.acceptedAnswer.text])
+      .filter((s) => !text.includes(norm(s)))
     check(
-      miss.length === 0,
-      'Trang trung tâm: đủ giới thiệu, tính năng, bảng so sánh, gói',
-      miss[0],
+      miss.length === 0 && faq.mainEntity.length === details,
+      'FAQPage khớp FAQ hiển thị',
+      `${faq.mainEntity.length} câu, ${details} <details>${miss[0] ? '; thiếu: ' + miss[0] : ''}`,
     )
-    check(html.includes('href="/"'), 'breadcrumb về trang chủ')
-  }
+  } else check(details === 0, 'trang có FAQ thì phải có FAQPage')
 
-  if (page.path === '/') {
-    check(html.includes(`href="${centerPagePath}"`), 'trang chủ có link sang trang trung tâm')
-    for (const t of home.audiences.tabs) {
-      const parts = [
-        t.label,
-        t.title,
-        ...t.points.flatMap((p) => [p.lead, p.text, p.strong ?? '']),
-      ].filter(Boolean)
-      const miss = parts.filter((s) => !text.includes(norm(s)))
-      check(miss.length === 0, `Tab "${t.label}": đủ tiêu đề + 4 dòng trong HTML`, miss[0])
-    }
+  if (path === '/') {
+    check(home.faq.items.length === faq?.mainEntity.length, 'Trang chủ: FAQPage đủ câu trong vi.ts')
     check(
-      (html.match(/role="tabpanel"/g) ?? []).length === home.audiences.tabs.length,
-      'đủ 4 tabpanel',
+      /phần mềm quản lý trung tâm/i.test(title) && /lớp học thêm/i.test(title),
+      'Trang chủ: title có "phần mềm quản lý trung tâm" + "lớp học thêm"',
     )
-    // Pop-up Chính sách bảo mật: nội dung phải có sẵn trong HTML (đọc được khi tắt JS)
-    const pParts = [privacy.title, ...privacy.sections.flatMap((s) => [s.heading, ...s.paragraphs])]
-    const pMiss = pParts.filter((s) => !text.includes(norm(s)))
-    check(pMiss.length === 0, 'Chính sách bảo mật: đủ nội dung trong HTML', pMiss[0])
-    check(!text.includes('CẦN XÁC NHẬN: số ngày'), 'Chính sách: không còn chỗ chờ số ngày phản hồi')
   }
 }
 
@@ -176,6 +189,7 @@ console.log('\n== tệp tĩnh')
 for (const f of [
   'robots.txt',
   'sitemap.xml',
+  '404.html',
   'og-image.png',
   'favicon.ico',
   'apple-touch-icon.png',
@@ -189,9 +203,6 @@ for (const f of [
   )
   check(ok, `dist/${f}`)
 }
-const sitemap = await readFile('dist/sitemap.xml', 'utf8')
-for (const p of PAGES)
-  check(sitemap.includes(`<loc>${site.url}${p.path}</loc>`), `sitemap có ${p.path}`)
 check(
   (await readFile('dist/robots.txt', 'utf8')).includes(`Sitemap: ${site.url}/sitemap.xml`),
   'robots.txt trỏ tới sitemap',

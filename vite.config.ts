@@ -56,7 +56,10 @@ export default defineConfig(({ command, isSsrBuild }) => ({
     // đều phục vụ file này ở URL không có "/" cuối (khớp với link trong trang).
     dirStyle: 'flat',
     // react-helmet chèn title/meta lên đầu <head>, đẩy <meta charset> ra sau 1 KB đầu: đưa nó về đầu
-    onPageRendered: (_route, html) => {
+    onPageRendered: (_route, rendered) => {
+      // Route lazy: vite-react-ssg tự chèn preload cho MỌI ảnh mà chunk của route có thể dùng
+      // (cả trăm ảnh vì illustrations.ts gom hết ảnh). Bỏ đi; preload ảnh hero tự đặt có data-rh.
+      const html = rendered.replace(/<link rel="preload" as="image" href="[^"]*"[^>]*>/g, '')
       const charset = html.match(/<meta charset=[^>]*>/i)?.[0]
       return charset ? html.replace(charset, '').replace(/<head>/i, `<head>${charset}`) : html
     },

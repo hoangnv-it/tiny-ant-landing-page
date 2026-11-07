@@ -86,10 +86,11 @@ export const subpage = {
 
 export const nav = {
   label: 'Điều hướng chính',
+  // Menu thả xuống: 5 trang tính năng (featurePages)
+  featuresLabel: 'Tính năng',
   links: [
-    { href: '/#tuyen-sinh', label: 'Tuyển sinh' },
-    { href: '/#hoc-phi', label: 'Học phí' },
-    { href: '/#phu-huynh', label: 'Phụ huynh' },
+    { href: '/bang-gia', label: 'Bảng giá' },
+    { href: '/huong-dan', label: 'Hướng dẫn' },
     { href: '/#faq', label: 'Câu hỏi thường gặp' },
   ],
   demoCta: 'Đăng ký dùng thử miễn phí',
@@ -101,25 +102,39 @@ export const nav = {
 
 export const footer = {
   about:
-    'Phần mềm quản lý lớp học thêm và trung tâm: điểm danh, giao bài, báo phụ huynh, theo dõi học phí.',
+    'Phần mềm quản lý trung tâm và lớp học thêm: tuyển sinh, điểm danh, giao bài, học phí, báo phụ huynh.',
   label: 'Liên kết cuối trang',
+  // Footer có link tới mọi trang của site
   columns: [
+    {
+      title: 'Tính năng',
+      links: featurePages.map(({ href, label }) => ({ href, label })),
+    },
     {
       title: 'Dành cho',
       links: [
-        { href: '/#vong-doi', label: 'Trung tâm' },
-        { href: '/#nha-truong', label: 'Nhà trường' },
-        { href: '/#hoc-sinh', label: 'Học sinh' },
-        { href: '/#phu-huynh', label: 'Phụ huynh' },
+        { href: '/', label: 'Trung tâm học thêm' },
+        { href: '/bao-cao-phu-huynh', label: 'Phụ huynh' },
+        { href: '/hoc-sinh', label: 'Học sinh' },
+        { href: '/nha-truong', label: 'Nhà trường' },
+      ],
+    },
+    {
+      title: 'Hướng dẫn',
+      links: [
+        { href: '/huong-dan', label: 'Tất cả hướng dẫn' },
+        { href: '/huong-dan/quan-ly-hoc-phi-lop-hoc-them', label: 'Quản lý học phí' },
+        { href: '/huong-dan/bai-kiem-tra-dau-vao-trung-tam', label: 'Bài kiểm tra đầu vào' },
+        { href: '/huong-dan/bao-cao-phu-huynh-hang-tuan', label: 'Báo cáo phụ huynh' },
       ],
     },
     {
       title: 'Tìm hiểu',
       links: [
+        { href: '/bang-gia', label: 'Bảng giá' },
         { href: '/#bat-dau', label: 'Bắt đầu trong 3 bước' },
-        { href: '/#bang-gia', label: 'Bảng giá' },
         { href: '/#faq', label: 'Câu hỏi thường gặp' },
-        { href: privacyPath, label: 'Chính sách bảo mật' },
+        { href: '/chinh-sach-bao-mat', label: 'Chính sách bảo mật' },
       ],
     },
   ],

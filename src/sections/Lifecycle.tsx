@@ -102,7 +102,7 @@ function LifecycleBlock({
     return (
       <article
         id={b.id}
-        className="grid gap-8 rounded-[1.25rem] border-2 border-ink-500 bg-card p-5 shadow-card md:col-span-2 md:grid-cols-[1.15fr_1fr] md:items-center md:p-8 xl:p-10"
+        className="grid gap-8 rounded-[1.25rem] border-2 border-ink-500 bg-caption p-5 shadow-card md:col-span-2 md:grid-cols-[1.15fr_1fr] md:items-center md:p-8 xl:p-10"
       >
         {content}
         {media}

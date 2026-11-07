@@ -23,27 +23,19 @@ const norm = (s) => s.replace(/\s+/g, ' ').trim()
 try {
   // ---------- 1. axe ở nhiều trạng thái ----------
   console.log('\n== axe (WCAG 2.1 A/AA + best-practice)')
+  const openFaq = (p) =>
+    p.evaluate(() => document.querySelectorAll('#faq details').forEach((d) => (d.open = true)))
   const states = [
     ['/', 375, 'mặc định', async () => {}],
     ['/', 1280, 'mặc định', async () => {}],
-    ['/phan-mem-quan-ly-trung-tam', 375, 'mặc định', async () => {}],
-    [
-      '/phan-mem-quan-ly-trung-tam',
-      1280,
-      'mọi FAQ mở',
-      async (p) =>
-        p.evaluate(() => document.querySelectorAll('#faq details').forEach((d) => (d.open = true))),
-    ],
     ['/', 375, 'menu mở', async (p) => p.click('button[aria-controls="mobile-menu"]')],
     [
       '/',
       1280,
-      'tab Phụ huynh + mọi FAQ mở',
+      'menu Tính năng mở + mọi FAQ mở',
       async (p) => {
-        await p.click('#tab-phu-huynh')
-        await p.evaluate(() =>
-          document.querySelectorAll('#faq details').forEach((d) => (d.open = true)),
-        )
+        await p.click('button[aria-controls="menu-tinh-nang"]')
+        await openFaq(p)
       },
     ],
     [
@@ -57,15 +49,14 @@ try {
         await p.waitForTimeout(300) // chờ hiệu ứng mở xong
       },
     ],
-    [
-      '/',
-      375,
-      'pop-up chính sách mở',
-      async (p) => {
-        await p.click('footer a[href="#chinh-sach-bao-mat"]')
-        await p.waitForTimeout(300)
-      },
-    ],
+    ['/quan-ly-hoc-phi', 375, 'mặc định', async () => {}],
+    ['/quan-ly-hoc-phi', 1280, 'mọi FAQ mở', openFaq],
+    ['/kiem-tra-dau-vao', 1280, 'mặc định', async () => {}],
+    ['/bang-gia', 375, 'mọi FAQ mở', openFaq],
+    ['/huong-dan', 1280, 'mặc định', async () => {}],
+    ['/huong-dan/quan-ly-hoc-phi-lop-hoc-them', 375, 'mặc định', async () => {}],
+    ['/chinh-sach-bao-mat', 375, 'mặc định', async () => {}],
+    ['/404', 375, 'mặc định', async () => {}],
   ]
   for (const [path, width, label, act] of states) {
     const page = await newPage({ viewport: { width, height: 900 } })
@@ -156,28 +147,25 @@ try {
   check(stops.length > 15, 'đi hết trang bằng Tab', `${stops.length} điểm dừng`)
   check(noRing.length === 0, 'mọi điểm dừng có viền focus ≥ 2px', noRing.join(', '))
 
-  await page.focus('#tab-trung-tam')
-  const sel = () =>
-    page.evaluate(
-      () =>
-        document.activeElement.id +
-        (document.activeElement.getAttribute('aria-selected') === 'true' ? '✔' : ''),
-    )
-  const seq = []
-  for (const k of ['ArrowRight', 'ArrowRight', 'End', 'ArrowRight', 'Home', 'ArrowLeft']) {
-    await page.keyboard.press(k)
-    seq.push(`${k}→${await sel()}`)
-  }
-  check(
-    seq.join(' ') ===
-      'ArrowRight→tab-nha-truong✔ ArrowRight→tab-hoc-sinh✔ End→tab-phu-huynh✔ ArrowRight→tab-trung-tam✔ Home→tab-trung-tam✔ ArrowLeft→tab-phu-huynh✔',
-    'Tab: ←/→/Home/End chuyển và chọn tab',
-    seq.join(' '),
-  )
+  // Menu "Tính năng": Enter mở, Tab vào link đầu, Esc đóng và trả focus về nút
+  await page.focus('button[aria-controls="menu-tinh-nang"]')
+  await page.keyboard.press('Enter')
+  const ddOpen = await page.locator('#menu-tinh-nang').isVisible()
   await page.keyboard.press('Tab')
+  const inMenu = await page.evaluate(() => !!document.activeElement.closest('#menu-tinh-nang'))
+  await page.keyboard.press('Escape')
+  await page
+    .locator('#menu-tinh-nang')
+    .waitFor({ state: 'hidden', timeout: 1000 })
+    .catch(() => {})
+  const ddClosed = await page.locator('#menu-tinh-nang').isHidden()
+  const backOnButton = await page.evaluate(
+    () => document.activeElement.getAttribute('aria-controls') === 'menu-tinh-nang',
+  )
   check(
-    await page.evaluate(() => document.activeElement.getAttribute('role') === 'tabpanel'),
-    'Tab: phím Tab từ tab vào panel đang mở',
+    ddOpen && inMenu && ddClosed && backOnButton,
+    'Menu Tính năng: Enter mở, Tab vào link, Esc đóng và trả focus',
+    `mở ${ddOpen}, vào link ${inMenu}, đóng ${ddClosed}, focus về nút ${backOnButton}`,
   )
 
   await page.focus('#faq summary')
@@ -190,7 +178,11 @@ try {
 
   // ---------- 4. Ảnh, preload, CLS, JS ----------
   console.log('\n== Ảnh, preload, CLS, JS')
-  for (const file of ['dist/index.html', 'dist/phan-mem-quan-ly-trung-tam.html']) {
+  const htmlFiles = readdirSync('dist', { recursive: true })
+    .map((f) => String(f).replace(/\\/g, '/'))
+    .filter((f) => f.endsWith('.html'))
+    .map((f) => `dist/${f}`)
+  for (const file of htmlFiles) {
     const html = await readFile(file, 'utf8')
     const imgs = [...html.matchAll(/<img\b[^>]*>/g)].map((m) => m[0])
     const missing = imgs.filter((t) => !/\swidth="\d+"/.test(t) || !/\sheight="\d+"/.test(t))
@@ -209,16 +201,36 @@ try {
     'preload ảnh hero',
     `${preloads.length} thẻ (${preloads.filter((p) => /fetchpriority="high"/.test(p)).length} có fetchpriority=high)`,
   )
-  const jsFiles = readdirSync('dist/assets').filter((f) => f.endsWith('.js'))
-  let jsGz = 0
-  for (const f of jsFiles) jsGz += gzipSync(await readFile(`dist/assets/${f}`)).length
-  check(
-    jsGz < 80 * 1024,
-    'JS nén < 80 KB',
-    `${(jsGz / 1024).toFixed(1)} KB (${jsFiles.length} file)`,
-  )
+  // JS nén mà trình duyệt thực sự tải cho từng trang (entry + chunk của trang đó)
+  for (const path of [
+    '/',
+    '/quan-ly-hoc-phi',
+    '/bang-gia',
+    '/huong-dan/quan-ly-hoc-phi-lop-hoc-them',
+  ]) {
+    const p = await newPage({ viewport: { width: 375, height: 800 } })
+    const js = new Set()
+    p.on('response', (r) => {
+      const u = new URL(r.url())
+      if (u.pathname.startsWith('/assets/') && u.pathname.endsWith('.js')) js.add(u.pathname)
+    })
+    await p.goto(base + path, { waitUntil: 'networkidle' })
+    let gz = 0
+    for (const f of js) gz += gzipSync(await readFile(`dist${f}`)).length
+    check(
+      gz < 80 * 1024,
+      `JS nén < 80 KB: ${path}`,
+      `${(gz / 1024).toFixed(1)} KB (${js.size} file)`,
+    )
+    await p.close()
+  }
 
-  for (const width of [375, 1280]) {
+  for (const [path, width] of [
+    ['/', 375],
+    ['/', 1280],
+    ['/quan-ly-hoc-phi', 375],
+    ['/quan-ly-hoc-phi', 1280],
+  ]) {
     const p = await newPage({ viewport: { width, height: 800 } })
     await p.addInitScript(() => {
       window.__cls = 0
@@ -226,20 +238,26 @@ try {
         for (const e of l.getEntries()) if (!e.hadRecentInput) window.__cls += e.value
       }).observe({ type: 'layout-shift', buffered: true })
     })
-    await p.goto(base + '/', { waitUntil: 'networkidle' })
+    await p.goto(base + path, { waitUntil: 'networkidle' })
     for (let y = 0; y < 8; y++) {
       await p.mouse.wheel(0, 700)
       await p.waitForTimeout(150)
     }
     await p.waitForTimeout(500)
     const cls = await p.evaluate(() => window.__cls)
-    check(cls < 0.1, `CLS khi tải + cuộn hết trang @${width}`, cls.toFixed(4))
+    check(cls < 0.1, `CLS khi tải + cuộn hết trang ${path} @${width}`, cls.toFixed(4))
     await p.close()
   }
 
   // ---------- 5. Responsive: cuộn ngang, tràn chữ, vùng bấm ≥ 44px ----------
   console.log('\n== Responsive (375 / 768 / 1280), cả trạng thái menu mở và form có trường phụ')
-  for (const path of ['/', '/phan-mem-quan-ly-trung-tam']) {
+  for (const path of [
+    '/',
+    '/quan-ly-hoc-phi',
+    '/kiem-tra-dau-vao',
+    '/bang-gia',
+    '/huong-dan/quan-ly-hoc-phi-lop-hoc-them',
+  ]) {
     for (const width of [375, 768, 1280]) {
       const p = await newPage({ viewport: { width, height: 900 } })
       await p.goto(base + path, { waitUntil: 'networkidle' })
@@ -332,17 +350,16 @@ try {
     check(miss.length === 0, label, miss[0] ?? '')
   }
   expect('hero', [...home.hero.titleLines, home.hero.titleAccent, home.hero.lead])
+  expect('Có quen không?', [...home.problems.items])
+  expect('bảng Trước / Sau', home.beforeAfter.rows.flat())
   expect(
-    '4 thẻ vấn đề',
-    home.problems.items.flatMap((i) => [i.title, i.text]),
+    'vòng đời học viên',
+    home.lifecycle.blocks.flatMap((b) => [b.title, ...b.points]),
   )
-  for (const t of home.audiences.tabs)
-    expect(`tab "${t.label}" hiện đủ`, [t.title, ...t.points.map((p) => p.lead)])
-  expect('3 bước, lý do, thư viện', [
-    ...home.steps.items.map((s) => s.title),
-    ...home.why.items.map((w) => w.title),
-    ...home.library.points,
-  ])
+  expect(
+    '3 bước',
+    home.steps.items.map((s) => s.title),
+  )
   expect(
     'FAQ: câu hỏi',
     home.faq.items.map((i) => i.q),

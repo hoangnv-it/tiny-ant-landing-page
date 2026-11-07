@@ -6,9 +6,11 @@ import { chromium } from 'playwright'
 
 // Mọi URL trong sitemap (đọc từ bản build) + trang 404
 const ROUTES = [
-  ...[...(await readFile('dist/sitemap.xml', 'utf8')).matchAll(/<loc>https?:\/\/[^/]+([^<]*)<\/loc>/g)].map(
-    (m) => m[1] || '/',
-  ),
+  ...[
+    ...(await readFile('dist/sitemap.xml', 'utf8')).matchAll(
+      /<loc>https?:\/\/[^/]+([^<]*)<\/loc>/g,
+    ),
+  ].map((m) => m[1] || '/'),
   '/404',
 ]
 const viewport = { width: 375, height: 800 }

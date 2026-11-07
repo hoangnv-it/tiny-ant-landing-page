@@ -33,6 +33,7 @@ const page: FeatureContent = {
       title: 'Màn hình “Hôm nay”: biết ngay cần làm gì',
       text: [
         'Mở Tiny Ant là thấy màn hình “Hôm nay”: bài nào cần làm trước, hạn nộp khi nào. Mỗi ngày có nhiệm vụ 5 phút, đủ ngắn để con làm ngay mà không thấy nặng nề.',
+        'Bài tập về nhà thầy cô giao hiện ngay ở đây, con không phải lục lại nhóm Zalo của lớp. Thêm Tiny Ant vào màn hình chính là dùng như app, có thông báo khi giáo viên nhắc làm bài.',
       ],
       points: ['Bài cần làm và hạn nộp.', 'Nhiệm vụ 5 phút mỗi ngày.'],
     },
