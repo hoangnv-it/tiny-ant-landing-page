@@ -1,5 +1,5 @@
 // JSON-LD (schema.org) dựng từ nội dung trong vi.ts — không viết tay dữ liệu riêng.
-import { centerPage, centerPagePath, contact, home, site } from '../content/vi'
+import { contact, home, site } from '../content/vi'
 
 const ORG_ID = `${site.url}/#organization`
 const APP_ID = `${site.url}/#software`
@@ -49,37 +49,4 @@ const faqPage = (items: readonly { q: string; a: string }[]) => ({
 export const homeJsonLd = {
   '@context': 'https://schema.org',
   '@graph': [organization, softwareApplication, faqPage(home.faq.items)],
-}
-
-// Trang Phần mềm quản lý trung tâm: trang web nói về phần mềm (about) + đường dẫn + FAQ riêng
-const centerUrl = site.url + centerPagePath
-export const centerJsonLd = {
-  '@context': 'https://schema.org',
-  '@graph': [
-    organization,
-    softwareApplication,
-    {
-      '@type': 'WebPage',
-      '@id': centerUrl,
-      url: centerUrl,
-      name: centerPage.meta.title,
-      description: centerPage.meta.description,
-      inLanguage: 'vi',
-      about: { '@id': APP_ID },
-      publisher: { '@id': ORG_ID },
-    },
-    {
-      '@type': 'BreadcrumbList',
-      itemListElement: [
-        {
-          '@type': 'ListItem',
-          position: 1,
-          name: centerPage.breadcrumb.home,
-          item: site.url + '/',
-        },
-        { '@type': 'ListItem', position: 2, name: centerPage.breadcrumb.current, item: centerUrl },
-      ],
-    },
-    faqPage(centerPage.faq.items),
-  ],
 }

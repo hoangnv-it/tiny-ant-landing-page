@@ -24,9 +24,9 @@ export default function Faq({ faq = home.faq }: { faq?: FaqContent }) {
         <p className="mt-1 font-heading text-xl text-ink lg:text-2xl">{faq.subtitle}</p>
       )}
 
-      <div className="mt-5 grid gap-5 rounded-[1.25rem] border border-border bg-caption p-4 sm:grid-cols-[10rem_1fr] sm:p-6 xl:grid-cols-[11rem_1fr]">
-        {/* Tranh "Đàn gà mới nở" trong khung ảnh viền giấy */}
-        <div className="hidden self-start rounded-caption border border-border bg-white p-2 shadow-card sm:block">
+      <div className="mt-5 grid gap-5 rounded-[1.25rem] border border-border bg-caption p-4 sm:grid-cols-[10rem_1fr] sm:p-6 xl:grid-cols-1">
+        {/* Tranh "Đàn gà mới nở" trong khung ảnh viền giấy; từ 1280px cột FAQ hẹp nên ẩn tranh */}
+        <div className="hidden self-start rounded-caption border border-border bg-white p-2 shadow-card sm:block xl:hidden">
           <Illustration
             name="faq-boy"
             sizes="176px"

@@ -25,14 +25,12 @@ export const site = {
 export const demoAnchor = '/#dang-ky'
 // Mở pop-up Chính sách bảo mật (PrivacyModal)
 export const privacyAnchor = '#chinh-sach-bao-mat'
-// Trang con "Phần mềm quản lý trung tâm" (xuất phẳng: phan-mem-quan-ly-trung-tam.html)
-export const centerPagePath = '/phan-mem-quan-ly-trung-tam'
 
 export const nav = {
   label: 'Điều hướng chính',
   links: [
-    { href: '/#trung-tam', label: 'Trung tâm' },
-    { href: '/#nha-truong', label: 'Nhà trường' },
+    { href: '/#tuyen-sinh', label: 'Tuyển sinh' },
+    { href: '/#hoc-phi', label: 'Học phí' },
     { href: '/#phu-huynh', label: 'Phụ huynh' },
     { href: '/#faq', label: 'Câu hỏi thường gặp' },
   ],
@@ -51,7 +49,7 @@ export const footer = {
     {
       title: 'Dành cho',
       links: [
-        { href: centerPagePath, label: 'Trung tâm' },
+        { href: '/#vong-doi', label: 'Trung tâm' },
         { href: '/#nha-truong', label: 'Nhà trường' },
         { href: '/#hoc-sinh', label: 'Học sinh' },
         { href: '/#phu-huynh', label: 'Phụ huynh' },
@@ -61,7 +59,7 @@ export const footer = {
       title: 'Tìm hiểu',
       links: [
         { href: '/#bat-dau', label: 'Bắt đầu trong 3 bước' },
-        { href: '/#thu-vien', label: 'Thư viện bài' },
+        { href: '/#bang-gia', label: 'Bảng giá' },
         { href: '/#faq', label: 'Câu hỏi thường gặp' },
         { href: privacyAnchor, label: 'Chính sách bảo mật' },
       ],
@@ -80,164 +78,176 @@ export const heroVideoUrl: string = ''
 
 export const home = {
   meta: {
-    // ~60 / ~155 ký tự
-    title: 'Tiny Ant – Phần mềm quản lý lớp học thêm cho giáo viên, trung tâm',
+    // ~60 / 140–155 ký tự
+    title: 'Phần mềm quản lý trung tâm, lớp học thêm vừa và nhỏ | Tiny Ant',
     description:
-      'Tiny Ant là phần mềm quản lý lớp học thêm và quản lý trung tâm: điểm danh, giao bài, báo phụ huynh, theo dõi học phí trên điện thoại. Dùng thử miễn phí.',
+      'Tiny Ant là phần mềm quản lý trung tâm và lớp học thêm: thi thử xếp lớp, điểm danh, giao bài, thu và nhắc học phí, báo phụ huynh ngay trên điện thoại.',
   },
   hero: {
     // 3 dòng trên máy tính; dòng cuối màu đỏ
-    titleLines: ['Điểm danh, giao bài, thu học phí,', 'báo phụ huynh —'],
-    titleAccent: 'một app cho lớp học thêm.',
-    lead: 'Tiny Ant giúp trung tâm và giáo viên dạy thêm quản lý học sinh, buổi học và học phí ngay trên điện thoại. Phụ huynh thấy con học thế nào mỗi ngày, thầy cô bớt hẳn việc nhắn tin từng nhà.',
+    titleLines: ['Quản lý trung tâm học thêm', 'trên điện thoại: tuyển sinh,'],
+    titleAccent: 'điểm danh, học phí, báo phụ huynh.',
+    lead: 'Tiny Ant là phần mềm quản lý dành cho trung tâm học thêm vừa và nhỏ. Thi thử xếp lớp, điểm danh, giao bài, thu và nhắc học phí, báo cáo cho phụ huynh: tất cả ở một chỗ.',
     primaryCta: 'Đăng ký dùng thử miễn phí',
     secondaryCta: 'Xem cách hoạt động',
     videoClose: 'Đóng video',
-    // Đã xác nhận: mọi người dùng qua trình duyệt, chưa có app di động
-    note: 'Dùng trên điện thoại và máy tính, không cần cài đặt.',
+    note: 'Chạy trên trình duyệt. Thêm vào màn hình chính là dùng như app, không cần tải từ App Store hay CH Play.',
     attendanceAlt:
-      'Màn hình trang chủ của học sinh trong app Tiny Ant: nhiệm vụ hôm nay và bài cần làm trước',
-    parentAlt: 'Màn hình hôm nay dành cho phụ huynh trong app Tiny Ant',
+      'Màn hình Hôm nay của học sinh trong app Tiny Ant: nhiệm vụ hôm nay và bài cần làm trước',
+    parentAlt: 'Màn hình tổng quan dành cho phụ huynh trong app Tiny Ant',
   },
 
   problems: {
     lesson: 'Vấn đề gặp phải',
-    title: 'Quen thuộc với thầy cô không?',
-    listLabel: 'Bốn nỗi lo quen thuộc',
+    title: 'Có quen không?',
     items: [
-      {
-        image: 'problem-center',
-        title: 'Trung tâm, giáo viên dạy thêm',
-        text: 'Điểm danh bằng sổ. Danh sách học sinh nằm rải rác trong Zalo và Excel. Cuối tháng phải ngồi dò xem ai đã đóng học phí, ai chưa làm bài về nhà.',
-      },
-      {
-        image: 'problem-teacher',
-        title: 'Giáo viên trường',
-        text: 'Mất nhiều giờ soạn, giao, thu và chấm bài. Khó biết em nào chưa làm.',
-      },
-      {
-        image: 'problem-student',
-        title: 'Học sinh',
-        text: 'Ngại làm bài trên giấy, ngại gõ chữ trên điện thoại. Ôn tập không đúng chỗ yếu.',
-      },
-      {
-        image: 'problem-parent',
-        title: 'Phụ huynh',
-        text: 'Không biết con có bài gì, điểm ra sao. Thường chỉ biết khi họp phụ huynh.',
-      },
+      'Điểm danh bằng sổ giấy, cuối tháng ngồi cộng tay từng lớp.',
+      'Danh sách học sinh, điểm và học phí nằm rải rác trong nhiều file Excel.',
+      'Con vắng, có bài mới, sắp đến hạn nộp: lại nhắn Zalo từng phụ huynh.',
+      'Đến kỳ học phí phải nhắc từng nhà. Ngại nhắc, mà không nhắc thì không được.',
+      'Phụ huynh chuyển khoản, thầy cô dò sao kê từng dòng xem ai đã đóng.',
     ],
-    conclusion: 'Tiny Ant gom tất cả vào một nơi — mỗi người có đúng màn hình mình cần.',
+    conclusion: 'Tiny Ant gom tất cả vào một nơi. Xem vòng đời một học viên bên dưới.',
   },
 
-  audiences: {
-    lesson: 'Giải pháp của Tiny Ant',
-    title: 'Mỗi người một màn hình, chung một dữ liệu',
-    tabsLabel: 'Chọn đối tượng',
-    nextPrefix: 'Xem tiếp:',
-    // `anchor`: id neo trên trang; link tới /#<anchor> sẽ cuộn tới đây và mở đúng tab
-    tabs: [
+  beforeAfter: {
+    lesson: 'Trước và sau',
+    title: 'Trước và sau khi dùng Tiny Ant',
+    caption: 'So sánh công việc của trung tâm trước và sau khi dùng Tiny Ant',
+    head: ['Việc', 'Trước đây', 'Với Tiny Ant'],
+    rows: [
+      [
+        'Điểm danh',
+        'Sổ giấy, cuối tháng cộng tay',
+        'Điểm danh nhanh trên điện thoại ngay trong buổi học',
+      ],
+      [
+        'Báo vắng',
+        'Gọi hoặc nhắn từng phụ huynh',
+        'Phụ huynh nhận báo vắng tức thì, và tự báo khi con nghỉ',
+      ],
+      [
+        'Giao và thu bài',
+        'Gửi ảnh qua Zalo, dò xem em nào chưa nộp',
+        'Giao bài có hạn nộp, biết ngay ai chưa nộp, bài kiểm tra tự chấm',
+      ],
+      [
+        'Thu và nhắc học phí',
+        'Nhắn nhắc từng nhà, ghi tay vào sổ',
+        'Có biên lai thu tiền, tự động nhắc học phí',
+      ],
+      [
+        'Đối soát chuyển khoản',
+        'Dò sao kê ngân hàng từng dòng',
+        'Đối soát sao kê chuyển khoản với học phí',
+      ],
+      [
+        'Báo cáo phụ huynh',
+        'Đến buổi họp phụ huynh mới biết con học thế nào',
+        'Tóm tắt mỗi tối và báo cáo học tập hằng tuần',
+      ],
+    ],
+  },
+
+  lifecycle: {
+    lesson: 'Vòng đời một học viên',
+    title: 'Vòng đời một học viên tại trung tâm',
+    lead: 'Từ lúc phụ huynh hỏi thăm tới khi con học đều mỗi tuần, Tiny Ant đi cùng trung tâm ở từng bước.',
+    highlight: 'Điểm khác biệt',
+    blocks: [
       {
-        anchor: 'trung-tam',
-        icon: 'center',
-        label: 'Trung tâm',
-        image: 'tab-center',
-        title: 'Lớp học thêm chạy gọn, không cần sổ sách',
+        id: 'tuyen-sinh',
+        step: 'Bước 1 · Tuyển sinh',
+        title: 'Tuyển sinh: thi thử xếp lớp, học thử, ghi danh',
+        featured: true,
         points: [
-          {
-            lead: 'Danh sách học sinh một chỗ.',
-            text: 'Xếp học sinh theo lớp, tạo tài khoản hàng loạt từ danh sách, in phiếu đăng nhập có mã QR.',
-          },
-          {
-            lead: 'Mỗi buổi học vài lần chạm.',
-            text: 'Điểm danh, giao bài tập về nhà, chấm điểm và nhận xét ngay trong buổi.',
-          },
-          {
-            lead: 'Học phí rõ ràng.',
-            text: 'Học phí tính theo tháng; mở ra là biết em nào đã đóng, em nào còn thiếu.',
-          },
-          {
-            lead: 'Phụ huynh tự cập nhật.',
-            text: 'Phụ huynh nhận thông báo khi con vắng và báo cáo học tập mỗi tuần —',
-            strong: 'thầy cô không phải nhắn từng nhà.',
-          },
+          'Gửi phụ huynh link thi thử xếp lớp. Con làm bài online, không cần tài khoản, hết giờ tự nộp.',
+          'Hệ thống tự chấm thang điểm 10, có điểm từng phần, xếp trình độ theo khung điểm trung tâm tự đặt.',
+          'Hẹn học thử miễn phí vào một buổi học thật. Giáo viên chấm sao và nhận xét ngay trong buổi.',
+          'Theo dõi phễu tuyển sinh: Quan tâm → Đã thi thử → Đã học thử → Ghi danh.',
         ],
-        // Link sang trang con dành riêng cho trung tâm
-        more: { href: centerPagePath, label: 'Xem đầy đủ: phần mềm quản lý trung tâm' },
+        media: { kind: 'illustration', name: 'problem-student' },
+        links: [{ href: '/kiem-tra-dau-vao', label: 'Xem chi tiết: kiểm tra đầu vào' }],
       },
       {
-        anchor: 'nha-truong',
-        icon: 'school',
-        label: 'Nhà trường',
-        image: 'tab-school',
-        title: 'Giao bài, thu bài, chấm bài trong một chỗ',
+        id: 'van-hanh-lop',
+        step: 'Bước 2 · Vận hành lớp',
+        title: 'Vận hành lớp: điểm danh, giao bài, chấm bài',
+        featured: false,
         points: [
-          {
-            lead: 'Giao bài một lần.',
-            text: 'Cả lớp nhận bài ngay trên điện thoại hoặc máy tính.',
-          },
-          {
-            lead: 'Biết ngay em nào chưa làm.',
-            text: 'Không phải dò từng tập vở.',
-          },
-          {
-            lead: 'Có tính giờ, chấm tự động.',
-            text: 'Bài trắc nghiệm và bài tự luận nhập đáp án là số được chấm ngay.',
-          },
-          {
-            lead: 'Thư viện bài dùng chung.',
-            text: 'Soạn một lần, cả tổ dùng chung.',
-          },
+          'Lớp có thời khoá biểu, buổi học và nhiều giáo viên. Điểm danh nhanh, có buổi học bù.',
+          'Giao bài tập có hạn nộp, xem ai chưa nộp, giáo viên nhắc học sinh làm bài.',
+          'Bài kiểm tra có giờ, tự chấm trắc nghiệm, đúng/sai và tự luận ngắn.',
+          'Nhận xét nhanh cả lớp sau buổi học, ghi âm cả buổi cho học sinh nghe lại.',
         ],
-      },
-      {
-        anchor: 'hoc-sinh',
-        icon: 'student',
-        label: 'Học sinh',
-        image: 'tab-student',
-        title: 'Biết hôm nay cần làm gì',
-        points: [
-          {
-            lead: 'Việc sắp tới ở ngay màn hình đầu.',
-            text: 'Bài tập về nhà, lịch thi và hạn nộp.',
-          },
-          {
-            lead: 'Làm bài ngay trên điện thoại.',
-            text: 'Không cần giấy.',
-          },
-          {
-            lead: 'Xem điểm và nhận xét.',
-            text: 'Thầy cô chấm xong là thấy.',
-          },
-          {
-            lead: 'Ôn đúng chỗ còn yếu.',
-            text: 'Tiny Ant gợi ý bài ôn theo đúng chỗ em còn yếu.',
-          },
+        media: { kind: 'illustration', name: 'problem-teacher' },
+        links: [
+          { href: '/diem-danh-hoc-sinh', label: 'Xem chi tiết: điểm danh' },
+          { href: '/giao-bai-tap-online', label: 'Xem chi tiết: giao bài tập' },
         ],
       },
       {
-        anchor: 'phu-huynh',
-        icon: 'parent',
-        label: 'Phụ huynh',
-        image: 'tab-parent',
-        title: 'Biết con học thế nào, không cần hỏi thầy cô',
+        id: 'hoc-phi',
+        step: 'Bước 3 · Học phí',
+        title: 'Học phí: thu, nhắc, đối soát chuyển khoản',
+        featured: true,
         points: [
-          {
-            lead: 'Báo khi con vắng.',
-            text: 'Nhận thông báo ngay khi con vắng buổi học.',
-          },
-          {
-            lead: 'Báo cáo học tập mỗi tuần.',
-            text: 'Ngày học, bài đã nộp, điểm và buổi vắng trong một màn hình.',
-          },
-          {
-            lead: 'Bài tập về nhà của con.',
-            text: 'Biết con có bài gì và hạn nộp khi nào.',
-          },
-          {
-            lead: 'Học phí từng tháng.',
-            text: 'Biết đã đóng hay còn thiếu.',
-          },
+          'Học phí theo tháng: một mức chung cho cả trung tâm, sửa riêng được cho từng lớp.',
+          'Có biên lai thu tiền và tự động nhắc học phí, thầy cô không phải nhắn từng nhà.',
+          'Đối soát sao kê chuyển khoản ngân hàng với học phí, biết ngay ai đã đóng.',
+          'Phụ huynh xem tình trạng đóng tiền của con trong tab Học phí.',
         ],
+        media: { kind: 'illustration', name: 'problem-center' },
+        links: [{ href: '/quan-ly-hoc-phi', label: 'Xem chi tiết: quản lý học phí' }],
+      },
+      {
+        id: 'phu-huynh',
+        step: 'Bước 4 · Phụ huynh',
+        title: 'Phụ huynh: biết con học thế nào mà không cần hỏi',
+        featured: false,
+        points: [
+          'Báo vắng tức thì, bản tóm tắt buổi tối và báo cáo học tập hằng tuần.',
+          'Xem bài tập, hạn nộp, điểm và lịch học của con.',
+          'Nhắc con làm bài, gửi lời khen hiện thành banner trên màn hình của con.',
+          'Phụ huynh và con dùng chung một điện thoại, chuyển tài khoản bằng mã PIN.',
+        ],
+        media: {
+          kind: 'screen',
+          name: 'app-parent-report',
+          alt: 'Màn hình báo cáo tuần dành cho phụ huynh: ngày học, bài đã nộp, nộp trễ, điểm theo môn',
+        },
+        links: [{ href: '/bao-cao-phu-huynh', label: 'Xem chi tiết: báo cáo phụ huynh' }],
+      },
+      {
+        id: 'hoc-sinh',
+        step: 'Bước 5 · Học sinh',
+        title: 'Học sinh: có động lực học mỗi ngày',
+        featured: false,
+        points: [
+          'Màn hình “Hôm nay” cho biết hôm nay cần làm gì, kèm nhiệm vụ 5 phút mỗi ngày.',
+          'Chuỗi ngày học, huy hiệu, bảng xếp hạng cùng lớp và khen thưởng khi làm tốt.',
+          'Luyện lại câu sai theo từng môn, ôn từ vựng 5 phút.',
+          'Game từ vựng và thẻ phản xạ có phát âm.',
+        ],
+        media: {
+          kind: 'screen',
+          name: 'app-attendance',
+          alt: 'Màn hình Hôm nay của học sinh trong app Tiny Ant: nhiệm vụ hôm nay và bài cần làm trước',
+        },
+        links: [{ href: '/hoc-sinh', label: 'Xem chi tiết: dành cho học sinh' }],
+      },
+      {
+        id: 'chu-trung-tam',
+        step: 'Bước 6 · Chủ trung tâm',
+        title: 'Chủ trung tâm: nhìn toàn cảnh trên một màn hình',
+        featured: false,
+        points: [
+          'Màn hình tổng quan trung tâm: học viên, lịch học thử sắp tới, học phí.',
+          'Mỗi giáo viên có tài khoản riêng, một lớp có thể có nhiều giáo viên.',
+          'Dùng trên điện thoại và máy tính. Thêm vào màn hình chính như app, có thông báo đẩy.',
+        ],
+        media: { kind: 'illustration', name: 'tab-center' },
+        links: [{ href: '/bang-gia', label: 'Xem bảng giá' }],
       },
     ],
   },
@@ -257,28 +267,41 @@ export const home = {
     ],
   },
 
-  why: {
-    lesson: 'Điểm mạnh',
-    title: 'Vì sao thầy cô chọn Tiny Ant',
+  // Chỉ hiện khi đã có cảm nhận thật (SHOW_TESTIMONIALS trong src/sections/Testimonials.tsx)
+  testimonials: {
+    lesson: 'Cảm nhận',
+    title: 'Trung tâm nói gì về Tiny Ant',
     items: [
-      { title: 'Giao diện đơn giản, dễ dùng', text: 'Không mất thời gian làm quen.' },
-      { title: 'Tiết kiệm thời gian', text: 'Giảm việc lặp lại, tăng thời gian dạy.' },
-      { title: 'Minh bạch, rõ ràng', text: 'Phụ huynh luôn cập nhật tình hình học tập.' },
       {
-        title: 'Phản hồi trong 1 ngày làm việc',
-        text: `Gọi ${contact.phoneDisplay} hoặc email ${contact.email}.`,
+        quote: '[[TODO: cảm nhận thật của trung tâm đang dùng, có sự đồng ý]]',
+        name: '[[TODO: tên người nói]]',
+        center: '[[TODO: tên trung tâm]]',
+      },
+      {
+        quote: '[[TODO: cảm nhận thật của trung tâm đang dùng, có sự đồng ý]]',
+        name: '[[TODO: tên người nói]]',
+        center: '[[TODO: tên trung tâm]]',
+      },
+      {
+        quote: '[[TODO: cảm nhận thật của trung tâm đang dùng, có sự đồng ý]]',
+        name: '[[TODO: tên người nói]]',
+        center: '[[TODO: tên trung tâm]]',
       },
     ],
   },
 
-  library: {
-    lesson: 'Tài liệu có sẵn',
-    title: 'Thư viện bài dùng chung, có sẵn để dạy ngay',
-    points: [
-      'Bài học, bài tập, đề kiểm tra theo từng môn, từng khối.',
-      'Có tính giờ, chấm tự động.',
-      'Dễ dàng chỉnh sửa, tùy biến.',
-    ],
+  pricing: {
+    lesson: 'Bảng giá',
+    title: 'Gói theo số học sinh',
+    lead: 'Trung tâm chọn gói vừa với số học sinh của mình. Tiny Ant đang cho dùng thử miễn phí trước khi đăng ký.',
+    link: 'Xem bảng giá chi tiết',
+  },
+
+  schools: {
+    lesson: 'Nhà trường',
+    title: 'Giáo viên trường cũng dùng được',
+    text: 'Giáo viên trường dùng Tiny Ant để giao bài, thu bài và chấm bài cho cả lớp, có bài kiểm tra tự chấm và thư viện bài dùng chung.',
+    link: 'Xem Tiny Ant cho nhà trường',
   },
 
   faq: {
@@ -292,7 +315,31 @@ export const home = {
       },
       {
         q: 'Phụ huynh có cần cài app không?',
-        a: 'Không cần. Phụ huynh, học sinh và thầy cô đều dùng Tiny Ant ngay trên trình duyệt của điện thoại hoặc máy tính. Hiện Tiny Ant chưa có app di động.',
+        a: 'Không cần tải từ App Store hay CH Play. Phụ huynh mở Tiny Ant trên trình duyệt, chỉ cần thêm vào màn hình chính là dùng như app, có thông báo.',
+      },
+      {
+        q: 'Phụ huynh không rành công nghệ có dùng được không?',
+        a: 'Được. Phụ huynh mở Tiny Ant như mở một trang web. Báo vắng, tóm tắt buổi tối và báo cáo hằng tuần tự gửi tới. Nếu con và phụ huynh dùng chung một điện thoại, chỉ cần chuyển tài khoản bằng mã PIN.',
+      },
+      {
+        q: 'Có nhắc học phí tự động không?',
+        a: 'Có. Tiny Ant tự động nhắc học phí, có biên lai thu tiền và đối soát được sao kê chuyển khoản ngân hàng với học phí.',
+      },
+      {
+        q: 'Học sinh làm bài thi thử có cần tài khoản không?',
+        a: 'Không cần. Trung tâm gửi link thi thử, học sinh làm bài online ngay. Mỗi link chỉ nộp được một lần và hết hạn sau 14 ngày.',
+      },
+      {
+        q: 'Chuyển từ Excel sang Tiny Ant có khó không?',
+        a: 'Không khó. Tiny Ant tạo tài khoản học sinh hàng loạt từ danh sách và in phiếu đăng nhập bằng mã QR cho từng em.',
+      },
+      {
+        q: 'Giáo viên part-time có tài khoản riêng không?',
+        a: 'Có. Mỗi giáo viên có tài khoản riêng, và một lớp có thể có nhiều giáo viên cùng dạy.',
+      },
+      {
+        q: 'Dữ liệu của trung tâm lưu ở đâu, có an toàn không?',
+        a: 'Mỗi giáo viên, học sinh và phụ huynh đăng nhập bằng tài khoản riêng. [[TODO: nơi lưu trữ dữ liệu, sao lưu, bảo mật]]',
       },
       {
         q: 'Tôi có thể dùng thử trước khi đăng ký không?',
@@ -319,160 +366,16 @@ export const home = {
   },
 } as const
 
-// Trang /phan-mem-quan-ly-trung-tam — từ khoá chính: "phần mềm quản lý trung tâm (dạy thêm)".
-// Chỉ ghi tính năng đã xác nhận: nhiều cơ sở, nhiều giáo viên; báo cáo cho chủ trung tâm; xuất Excel.
-export const centerPage = {
-  meta: {
-    // ~50 / ~155 ký tự
-    title: 'Phần mềm quản lý trung tâm dạy thêm – Tiny Ant',
-    description:
-      'Phần mềm quản lý trung tâm dạy thêm: nhiều cơ sở, nhiều giáo viên, điểm danh, giao bài, học phí, báo phụ huynh, báo cáo xuất Excel. Dùng thử miễn phí.',
-  },
-  breadcrumb: {
-    label: 'Bạn đang ở',
-    home: 'Trang chủ',
-    current: 'Phần mềm quản lý trung tâm',
-  },
-  hero: {
-    lesson: 'Dành cho trung tâm',
-    title: 'Phần mềm quản lý trung tâm dạy thêm',
-    // Đoạn định nghĩa ngắn: để công cụ tìm kiếm và trợ lý AI trích nguyên văn
-    lead: 'Tiny Ant là phần mềm quản lý trung tâm dạy thêm, dùng ngay trên trình duyệt điện thoại và máy tính. Trung tâm có nhiều cơ sở, nhiều giáo viên, nhiều lớp học thêm đều quản lý chung một chỗ: điểm danh từng buổi học, giao và chấm bài tập về nhà, theo dõi học phí, báo phụ huynh, xem báo cáo và xuất Excel.',
-  },
-  pains: {
-    lesson: 'Vấn đề gặp phải',
-    title: 'Quản lý trung tâm bằng sổ, Excel và Zalo: quen nhưng mệt',
-    items: [
-      'Điểm danh bằng sổ, cuối tháng ngồi cộng tay từng lớp.',
-      'Danh sách học sinh nằm rải rác trong Zalo và Excel, mỗi giáo viên giữ một bản.',
-      'Cuối tháng dò từng em xem ai đã đóng học phí, ai còn thiếu.',
-      'Con vắng, có bài mới: lại nhắn từng phụ huynh.',
-    ],
-  },
-  features: {
-    lesson: 'Tính năng',
-    title: 'Tiny Ant giúp trung tâm quản lý những gì',
-    items: [
-      {
-        title: 'Nhiều cơ sở, nhiều giáo viên',
-        text: 'Các cơ sở, giáo viên và lớp học thêm của trung tâm nằm chung một nơi, không còn mỗi người một file.',
-      },
-      {
-        title: 'Học sinh và lớp học thêm',
-        text: 'Xếp học sinh theo lớp, tạo tài khoản hàng loạt từ danh sách, in phiếu đăng nhập có mã QR.',
-      },
-      {
-        title: 'Điểm danh từng buổi học',
-        text: 'Vài lần chạm mỗi buổi học. Phụ huynh nhận thông báo ngay khi con vắng.',
-      },
-      {
-        title: 'Bài tập về nhà, chấm tự động',
-        text: 'Giao bài một lần, cả lớp nhận trên điện thoại. Bài trắc nghiệm và bài tự luận nhập đáp án là số được chấm ngay. Có sẵn Thư viện bài theo môn, theo khối.',
-      },
-      {
-        title: 'Học phí theo tháng',
-        text: 'Mở ra là biết em nào đã đóng, em nào còn thiếu.',
-      },
-      {
-        // [CẦN XÁC NHẬN: các loại báo cáo cụ thể (doanh thu, sĩ số, chuyên cần…)] — chưa ghi chi tiết
-        title: 'Báo cáo cho chủ trung tâm, xuất Excel',
-        text: 'Chủ trung tâm xem báo cáo ngay trong Tiny Ant và xuất ra file Excel khi cần lưu trữ.',
-      },
-    ],
-  },
-  roles: {
-    lesson: 'Ai dùng Tiny Ant',
-    title: 'Mỗi người trong trung tâm một màn hình',
-    items: [
-      {
-        icon: 'center',
-        title: 'Chủ trung tâm',
-        text: 'Theo dõi các cơ sở, lớp học và học phí; xem báo cáo, xuất Excel.',
-      },
-      {
-        icon: 'school',
-        title: 'Giáo viên',
-        text: 'Điểm danh, giao bài, chấm điểm và nhận xét ngay trong buổi học.',
-      },
-      {
-        icon: 'student',
-        title: 'Học sinh',
-        text: 'Thấy bài tập về nhà và hạn nộp ở màn hình đầu, làm bài ngay trên điện thoại.',
-      },
-      {
-        icon: 'parent',
-        title: 'Phụ huynh',
-        text: 'Nhận thông báo khi con vắng, báo cáo học tập mỗi tuần, biết học phí từng tháng.',
-      },
-    ],
-  },
-  compare: {
-    lesson: 'So sánh',
-    title: 'Excel + Zalo và Tiny Ant khác nhau thế nào',
-    caption: 'So sánh cách quản lý trung tâm dạy thêm bằng Excel + Zalo và bằng Tiny Ant',
-    head: ['Việc', 'Excel + Zalo', 'Tiny Ant'],
-    rows: [
-      [
-        'Điểm danh',
-        'Sổ giấy hoặc bảng tính, cộng tay cuối tháng',
-        'Điểm danh trên điện thoại ngay trong buổi học',
-      ],
-      [
-        'Danh sách học sinh',
-        'Rải rác trong nhiều file và nhóm Zalo',
-        'Một chỗ, xếp theo lớp, theo cơ sở',
-      ],
-      [
-        'Bài tập về nhà',
-        'Gửi ảnh qua Zalo, thu và chấm tay',
-        'Giao một lần, bài trắc nghiệm chấm tự động',
-      ],
-      ['Học phí', 'Dò từng em cuối tháng', 'Biết ngay em nào đã đóng, em nào còn thiếu'],
-      ['Báo phụ huynh', 'Nhắn từng nhà', 'Thông báo khi con vắng, báo cáo học tập mỗi tuần'],
-      ['Báo cáo', 'Tự tổng hợp bằng tay', 'Có sẵn báo cáo, xuất Excel'],
-    ],
-  },
-  plans: {
-    lesson: 'Gói sử dụng',
-    title: 'Gói theo quy mô trung tâm',
-    lead: 'Tiny Ant có gói riêng theo số học sinh. Trung tâm chọn gói vừa với mình, không phải trả cho phần không dùng tới.',
-    listLabel: 'Các gói theo số học sinh',
-    tiers: ['1–50 học sinh', '51–100 học sinh', '101–200 học sinh', 'Trên 200 học sinh'],
-    // Đã chốt: chưa công khai giá
-    price: 'Liên hệ báo giá',
-  },
-  faq: {
-    lesson: 'Câu hỏi thường gặp',
-    title: 'Hỏi đáp về quản lý trung tâm',
-    subtitle: 'Trung tâm hay hỏi Tiny Ant',
-    items: [
-      {
-        q: 'Tiny Ant có quản lý được trung tâm nhiều cơ sở không?',
-        a: 'Có. Một trung tâm có thể có nhiều cơ sở, nhiều giáo viên và nhiều lớp học thêm, tất cả quản lý trong Tiny Ant.',
-      },
-      {
-        q: 'Chủ trung tâm có xem được báo cáo và xuất Excel không?',
-        a: 'Có. Chủ trung tâm xem báo cáo ngay trong Tiny Ant và xuất ra file Excel khi cần.',
-      },
-      {
-        q: 'Phần mềm quản lý trung tâm Tiny Ant giá bao nhiêu?',
-        a: `Tiny Ant có gói theo số học sinh: 1–50, 51–100, 101–200 và trên 200 học sinh. Anh/chị gọi hoặc nhắn Zalo ${contact.phoneDisplay}, hoặc đăng ký dùng thử để nhận báo giá.`,
-      },
-      {
-        q: 'Giáo viên, học sinh, phụ huynh có cần cài app không?',
-        a: 'Không cần. Mọi người dùng Tiny Ant ngay trên trình duyệt của điện thoại hoặc máy tính. Hiện Tiny Ant chưa có app di động.',
-      },
-      {
-        q: 'Chuyển từ Excel sang Tiny Ant có mất công không?',
-        a: 'Không nhiều. Tiny Ant tạo tài khoản học sinh hàng loạt từ danh sách và in phiếu đăng nhập có mã QR cho từng em.',
-      },
-      {
-        q: 'Trung tâm có dùng thử trước được không?',
-        a: 'Có. Tiny Ant đang cho dùng thử miễn phí. Anh/chị đăng ký dùng thử, chúng tôi liên hệ trong 1 ngày làm việc để hướng dẫn bắt đầu.',
-      },
-    ],
-  },
-} as const
+// 4 gói theo số học sinh: dùng ở trang chủ và /bang-gia.
+// price: null khi chưa có giá thật -> hiện `pricePending`, không ghi `offers` vào schema.
+export const pricingTiers: readonly { name: string; price: number | null }[] = [
+  { name: '1–50 học sinh', price: null },
+  { name: '51–100 học sinh', price: null },
+  { name: '101–200 học sinh', price: null },
+  { name: 'Trên 200 học sinh', price: null },
+]
+export const pricePending = '[[TODO: giá]]'
+export const priceUnit = 'đồng/tháng'
 
 // Pop-up đăng ký dùng thử — dùng chung cho mọi nút "Đăng ký dùng thử" trên mọi trang
 export const leadForm = {
