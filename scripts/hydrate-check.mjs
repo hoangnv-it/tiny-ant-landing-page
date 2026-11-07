@@ -3,7 +3,7 @@
 import { preview } from 'vite'
 import { chromium } from 'playwright'
 
-const ROUTES = ['/']
+const ROUTES = ['/', '/phan-mem-quan-ly-trung-tam']
 const viewport = { width: 375, height: 800 }
 
 const server = await preview({ preview: { port: 4176, strictPort: false } })

@@ -26,6 +26,14 @@ try {
   const states = [
     ['/', 375, 'mặc định', async () => {}],
     ['/', 1280, 'mặc định', async () => {}],
+    ['/phan-mem-quan-ly-trung-tam', 375, 'mặc định', async () => {}],
+    [
+      '/phan-mem-quan-ly-trung-tam',
+      1280,
+      'mọi FAQ mở',
+      async (p) =>
+        p.evaluate(() => document.querySelectorAll('#faq details').forEach((d) => (d.open = true))),
+    ],
     ['/', 375, 'menu mở', async (p) => p.click('button[aria-controls="mobile-menu"]')],
     [
       '/',
@@ -182,7 +190,7 @@ try {
 
   // ---------- 4. Ảnh, preload, CLS, JS ----------
   console.log('\n== Ảnh, preload, CLS, JS')
-  for (const file of ['dist/index.html']) {
+  for (const file of ['dist/index.html', 'dist/phan-mem-quan-ly-trung-tam.html']) {
     const html = await readFile(file, 'utf8')
     const imgs = [...html.matchAll(/<img\b[^>]*>/g)].map((m) => m[0])
     const missing = imgs.filter((t) => !/\swidth="\d+"/.test(t) || !/\sheight="\d+"/.test(t))
@@ -231,7 +239,7 @@ try {
 
   // ---------- 5. Responsive: cuộn ngang, tràn chữ, vùng bấm ≥ 44px ----------
   console.log('\n== Responsive (375 / 768 / 1280), cả trạng thái menu mở và form có trường phụ')
-  for (const path of ['/']) {
+  for (const path of ['/', '/phan-mem-quan-ly-trung-tam']) {
     for (const width of [375, 768, 1280]) {
       const p = await newPage({ viewport: { width, height: 900 } })
       await p.goto(base + path, { waitUntil: 'networkidle' })

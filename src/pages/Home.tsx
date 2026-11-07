@@ -1,12 +1,9 @@
 import Container from '../components/Container'
 import Illustration from '../components/Illustration'
 import Seo from '../components/Seo'
-import Sprig from '../components/Sprig'
 import { homeJsonLd } from '../lib/structuredData'
 import Audiences from '../sections/Audiences'
-import Cta from '../sections/Cta'
-import Faq from '../sections/Faq'
-import Friends from '../sections/Friends'
+import FaqCtaSheet from '../sections/FaqCtaSheet'
 import Hero from '../sections/Hero'
 import Library from '../sections/Library'
 import Problems from '../sections/Problems'
@@ -55,25 +52,7 @@ export default function Home() {
         <Library />
       </Container>
 
-      {/* Hàng cuối: một khung giấy lớn — FAQ | khối đăng ký | tranh "Hòn đá to". Cạnh nhau từ 1280px */}
-      <Container id="hang-4">
-        <div className="relative rounded-sheet border-[1.5px] border-border px-5 pt-8 pb-12 sm:px-8 xl:px-12 xl:pt-8 xl:pb-20">
-          <Sprig className="absolute top-12 right-[6%] hidden w-16 xl:block" />
-          <Sprig className="absolute bottom-6 left-[30%] hidden w-16 xl:block" />
-          <Sprig className="absolute right-[4%] bottom-14 hidden w-16 xl:block" />
-          <div className="grid gap-section md:grid-cols-2 xl:grid-cols-[545fr_450fr_365fr] xl:gap-9 [&>*]:min-w-0">
-            <div className="md:col-span-2 xl:col-span-1">
-              <Faq />
-            </div>
-            <div className="xl:pt-[9.5rem]">
-              <Cta />
-            </div>
-            <div className="xl:pt-[7.5rem]">
-              <Friends />
-            </div>
-          </div>
-        </div>
-      </Container>
+      <FaqCtaSheet />
     </>
   )
 }

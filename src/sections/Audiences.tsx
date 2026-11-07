@@ -146,6 +146,15 @@ export default function Audiences() {
                     </li>
                   ))}
                 </ul>
+                {'more' in t && (
+                  <a
+                    href={t.more.href}
+                    className="mt-3 inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-ink hover:underline"
+                  >
+                    {t.more.label}
+                    <Icon name="arrowForward" className="size-4" />
+                  </a>
+                )}
               </div>
             </div>
             <button

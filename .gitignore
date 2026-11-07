@@ -10,3 +10,6 @@ shots
 
 # Ảnh gốc (PNG) trước khi nén WebP — không đưa vào repo
 assets-originals
+
+# Thư mục tạm của wrangler dev
+.wrangler

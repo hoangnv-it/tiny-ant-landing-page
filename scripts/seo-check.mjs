@@ -1,19 +1,28 @@
 // Kiểm tra HTML đã prerender trong dist: thẻ SEO, JSON-LD, và nội dung FAQ + tab có trong HTML.
 // Dùng: npm run build && npm run check:seo
 import { readFile, access } from 'node:fs/promises'
-import { home, privacy, site } from '../src/content/vi.ts'
+import { centerPage, centerPagePath, home, privacy, site } from '../src/content/vi.ts'
 
-const KEYWORDS = [
-  'phần mềm quản lý lớp học thêm',
-  'quản lý trung tâm',
-  'điểm danh, giao bài, báo phụ huynh',
-]
 const PAGES = [
   {
     file: 'dist/index.html',
     path: '/',
     meta: home.meta,
+    keywords: [
+      'phần mềm quản lý lớp học thêm',
+      'quản lý trung tâm',
+      'điểm danh, giao bài, báo phụ huynh',
+    ],
     schema: ['Organization', 'SoftwareApplication', 'FAQPage'],
+    faq: home.faq.items,
+  },
+  {
+    file: `dist${centerPagePath}.html`,
+    path: centerPagePath,
+    meta: centerPage.meta,
+    keywords: ['phần mềm quản lý trung tâm', 'nhiều cơ sở', 'xuất excel'],
+    schema: ['Organization', 'SoftwareApplication', 'WebPage', 'BreadcrumbList', 'FAQPage'],
+    faq: centerPage.faq.items,
   },
 ]
 
@@ -51,7 +60,8 @@ for (const page of PAGES) {
   check(/<html[^>]*lang="vi"/.test(html), 'html lang="vi"')
   check(title === page.meta.title, 'title', `${[...title].length} ký tự`)
   check(desc === page.meta.description, 'meta description', `${[...desc].length} ký tự`)
-  for (const k of KEYWORDS) check((title + ' ' + desc).toLowerCase().includes(k), `có cụm "${k}"`)
+  for (const k of page.keywords)
+    check((title + ' ' + desc).toLowerCase().includes(k), `có cụm "${k}"`)
   check(attr(html, /<link[^>]*rel="canonical"[^>]*href="([^"]*)"/) === url, 'canonical', url)
   for (const [p, want] of [
     ['og:type', 'website'],
@@ -110,22 +120,37 @@ for (const page of PAGES) {
   const faq = graph.find((n) => n['@type'] === 'FAQPage')
   if (faq)
     check(
-      faq.mainEntity.length === home.faq.items.length,
+      faq.mainEntity.length === page.faq.length,
       'FAQPage: đủ câu hỏi',
       `${faq.mainEntity.length}`,
     )
 
-  // Nội dung FAQ + tab phải có trong HTML prerender
-  if (page.path === '/') {
-    const text = visibleText(html)
-    const missing = []
-    for (const { q, a } of home.faq.items)
-      for (const s of [q, a]) if (!text.includes(norm(s))) missing.push(s)
+  // Nội dung FAQ (mọi trang) + tab (trang chủ) phải có trong HTML prerender
+  const text = visibleText(html)
+  const missing = []
+  for (const { q, a } of page.faq)
+    for (const s of [q, a]) if (!text.includes(norm(s))) missing.push(s)
+  check(missing.length === 0, `FAQ: đủ ${page.faq.length} câu hỏi + trả lời trong HTML`, missing[0])
+  check(!text.includes('CẦN XÁC NHẬN'), 'không lộ chữ CẦN XÁC NHẬN')
+
+  if (page.path === centerPagePath) {
+    const parts = [
+      centerPage.hero.lead,
+      ...centerPage.features.items.flatMap((i) => [i.title, i.text]),
+      ...centerPage.compare.rows.flat(),
+      ...centerPage.plans.tiers,
+    ]
+    const miss = parts.filter((s) => !text.includes(norm(s)))
     check(
-      missing.length === 0,
-      `FAQ: đủ ${home.faq.items.length} câu hỏi + trả lời trong HTML`,
-      missing[0],
+      miss.length === 0,
+      'Trang trung tâm: đủ giới thiệu, tính năng, bảng so sánh, gói',
+      miss[0],
     )
+    check(html.includes('href="/"'), 'breadcrumb về trang chủ')
+  }
+
+  if (page.path === '/') {
+    check(html.includes(`href="${centerPagePath}"`), 'trang chủ có link sang trang trung tâm')
     for (const t of home.audiences.tabs) {
       const parts = [
         t.label,

@@ -2,11 +2,16 @@ import Illustration from '../components/Illustration'
 import { LessonTag } from '../components/SectionTitle'
 import { home } from '../content/vi'
 
-const { faq } = home
+export type FaqContent = {
+  lesson: string
+  title: string
+  subtitle?: string
+  items: readonly { q: string; a: string }[]
+}
 
 // Câu hỏi thường gặp: <details>/<summary>, câu trả lời luôn có trong HTML prerender.
 // Dấu + : thanh dọc xoay 90° khi mở, chồng lên thanh ngang thành dấu −.
-export default function Faq() {
+export default function Faq({ faq = home.faq }: { faq?: FaqContent }) {
   return (
     <section id="faq" aria-labelledby="faq-title" className="min-w-0">
       <h2 id="faq-title" className="font-bold">
@@ -15,7 +20,9 @@ export default function Faq() {
           {faq.title}
         </span>
       </h2>
-      <p className="mt-1 font-heading text-xl text-ink lg:text-2xl">{faq.subtitle}</p>
+      {faq.subtitle && (
+        <p className="mt-1 font-heading text-xl text-ink lg:text-2xl">{faq.subtitle}</p>
+      )}
 
       <div className="mt-5 grid gap-5 rounded-[1.25rem] border border-border bg-caption p-4 sm:grid-cols-[10rem_1fr] sm:p-6 xl:grid-cols-[11rem_1fr]">
         {/* Tranh "Đàn gà mới nở" trong khung ảnh viền giấy */}
