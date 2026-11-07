@@ -1,4 +1,5 @@
-// Mọi chữ hiển thị trên trang nằm ở đây. Không viết chữ cứng trong component.
+// Mọi chữ hiển thị trên trang nằm ở đây (và trong src/content/features, src/content/guides).
+// Không viết chữ cứng trong component.
 
 export const contact = {
   phone: '0906490974',
@@ -547,6 +548,46 @@ export const guidesPage = {
   author: 'Tiny Ant',
   authorLabel: 'Tác giả',
 }
+
+// Danh sách bài hướng dẫn. Thân bài: src/content/guides/<đoạn cuối của href>.ts
+export const guides = [
+  {
+    href: '/huong-dan/quan-ly-hoc-phi-lop-hoc-them',
+    title: 'Cách quản lý học phí lớp học thêm: theo dõi, nhắc và đối soát',
+    meta: {
+      title: 'Cách quản lý học phí lớp học thêm hiệu quả | Tiny Ant',
+      description:
+        'Hướng dẫn quản lý học phí lớp học thêm: thống nhất cách tính, theo dõi ai đã đóng, nhắc khéo phụ huynh, đối soát chuyển khoản; so sánh Excel và phần mềm.',
+    },
+    crumb: 'Quản lý học phí lớp học thêm',
+    published: '2026-11-07',
+    modified: '2026-11-07',
+  },
+  {
+    href: '/huong-dan/bai-kiem-tra-dau-vao-trung-tam',
+    title: 'Cách thiết kế bài kiểm tra đầu vào cho trung tâm học thêm',
+    meta: {
+      title: 'Thiết kế bài kiểm tra đầu vào cho trung tâm học thêm | Tiny Ant',
+      description:
+        'Cách thiết kế bài thi xếp lớp cho trung tâm học thêm: chọn nội dung, độ dài, đặt khung điểm xếp trình độ, quy trình thi thử, học thử rồi ghi danh.',
+    },
+    crumb: 'Bài kiểm tra đầu vào',
+    published: '2026-11-07',
+    modified: '2026-11-07',
+  },
+  {
+    href: '/huong-dan/bao-cao-phu-huynh-hang-tuan',
+    title: 'Báo cáo học tập hằng tuần cho phụ huynh: nên báo gì, báo thế nào',
+    meta: {
+      title: 'Báo cáo học tập hằng tuần cho phụ huynh lớp học thêm | Tiny Ant',
+      description:
+        'Nên báo gì cho phụ huynh mỗi tuần, tần suất ra sao, viết nhận xét thế nào và cách giảm tin nhắn Zalo cho lớp học thêm. Kèm mẫu báo cáo để tham khảo.',
+    },
+    crumb: 'Báo cáo phụ huynh hằng tuần',
+    published: '2026-11-07',
+    modified: '2026-11-07',
+  },
+] as const
 
 // Trang 404
 export const notFound = {

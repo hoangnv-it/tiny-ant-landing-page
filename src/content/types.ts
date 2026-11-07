@@ -36,15 +36,11 @@ export type ArticleBlock =
   | { table: { caption: string; head: string[]; rows: string[][] } }
   | { note: string }
 
-/** Bài hướng dẫn (src/content/guides/*.ts), dựng bằng src/pages/ArticlePage.tsx */
+/** Thông tin bài hướng dẫn: nằm trong vi.ts (guides) để trang danh sách không phải tải cả bài */
+export type GuideMeta = (typeof import('./vi').guides)[number]
+
+/** Thân bài hướng dẫn (src/content/guides/<ten-bai>.ts), dựng bằng src/pages/ArticlePage.tsx */
 export type ArticleContent = {
-  path: string
-  meta: { title: string; description: string }
-  /** Ngày xuất bản / cập nhật, dạng YYYY-MM-DD */
-  published: string
-  modified: string
-  crumb: string
-  title: string
   lead: string
   body: ArticleBlock[]
   /** Đoạn cuối bài: giới thiệu Tiny Ant + link sang trang tính năng */

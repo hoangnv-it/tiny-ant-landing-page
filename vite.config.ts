@@ -8,9 +8,11 @@ import { imagetools } from 'vite-imagetools'
 import type {} from 'vite-react-ssg/node'
 import { site } from './src/content/vi.ts'
 
-/** sitemap.xml từ các trang đã prerender trong dist (index.html -> /, abc.html -> /abc). */
+/** sitemap.xml từ các trang đã prerender trong dist (index.html -> /, abc.html -> /abc,
+ * huong-dan/xyz.html -> /huong-dan/xyz). Bỏ trang 404. */
 async function writeSitemap(dir: string) {
-  const pages = (await readdir(dir))
+  const pages = (await readdir(dir, { recursive: true }))
+    .map((f) => f.replace(/\\/g, '/'))
     .filter((f) => f.endsWith('.html') && f !== '404.html')
     .map((f) => (f === 'index.html' ? '/' : `/${f.replace(/\.html$/, '')}`))
     .sort()
